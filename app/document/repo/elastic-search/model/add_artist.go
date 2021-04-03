@@ -15,12 +15,15 @@ type AddArtistRequest struct {
 	YearOfDrawing int      `json:"year_of_drawing"`
 	ArtTypes      []string `json:"art_types"`
 
+	// ArtistBoard
+	Desc string `json:"desc"`
+
 	// CommissionDetails
 	CommissionRequestCount int        `json:"commission_request_count"`
 	CommissionAcceptCount  int        `json:"commission_accept_count"`
 	CommissionSuccessCount int        `json:"commission_success_count"`
-	AvgRatings             *int       `json:"avg_ratings,omitempty"`
-	LastRequestTime        *time.Time `json:"last_request_time,omitempty"`
+	AvgRatings             *int       `json:"avg_ratings"`
+	LastRequestTime        *time.Time `json:"last_request_time"`
 }
 
 type User struct {
@@ -39,6 +42,7 @@ func NewAddArtistRequest(creator model.ArtistCreator) AddArtistRequest {
 			UserName:        creator.UserName,
 			ProfilePath:     creator.ProfilePath,
 			State:           creator.State,
+			RegTime:         creator.RegTime,
 			LastUpdatedTime: creator.LastUpdatedTime,
 		},
 		ID:             creator.ArtistID,

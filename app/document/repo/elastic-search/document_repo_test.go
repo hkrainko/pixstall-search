@@ -42,10 +42,11 @@ func teardown() {
 func TestAddArtist(t *testing.T) {
 	artistCreator := model.ArtistCreator{
 		User: model.User{
-			UserID:          "userID",
+			UserID:          "artistID",
 			UserName:        "userName",
 			ProfilePath:     "profilePath",
 			State:           model.UserStateActive,
+			RegTime:         time.Now(),
 			LastUpdatedTime: time.Now(),
 		},
 		ArtistID: "artistID",
@@ -62,22 +63,27 @@ func TestAddArtist(t *testing.T) {
 
 func TestUpdateArtist(t *testing.T) {
 	userName := "userName_update"
+	profilePath := "profilePath_update"
+	state := model.UserStateTerminated
 	now := time.Now()
 	avRatings := 5
 	artistUpdater := model.ArtistUpdater{
 		ArtistID:    "artistID",
 		UserName:    &userName,
-		ProfilePath: nil,
-		State:       nil,
-		ArtistIntro: nil,
-		ArtistBoard: &model.ArtistBoard{
-			Desc: "",
+		ProfilePath: &profilePath,
+		State:       &state,
+		ArtistIntro: &model.ArtistIntro{
+			YearOfDrawing: 999,
+			ArtTypes:      []string{"Type1_update", "Type2_update"},
 		},
-		PaymentMethods: nil,
+		ArtistBoard: &model.ArtistBoard{
+			Desc: "Desc_update",
+		},
+		PaymentMethods: &[]string{"payment_update", "payment_update__"},
 		CommissionDetails: &model.CommissionDetails{
-			CommissionRequestCount: 0,
-			CommissionAcceptCount:  0,
-			CommissionSuccessCount: 0,
+			CommissionRequestCount: 99,
+			CommissionAcceptCount:  99,
+			CommissionSuccessCount: 99,
 			AvgRatings:             &avRatings,
 			LastRequestTime:        &now,
 		},
