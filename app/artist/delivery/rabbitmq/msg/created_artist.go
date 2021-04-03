@@ -23,3 +23,18 @@ type User struct {
 	RegTime         time.Time       `json:"regTime"`
 	LastUpdatedTime time.Time       `json:"lastUpdatedTime"`
 }
+
+func (c CreatedArtist) ToDomainArtistCreator() model.ArtistCreator {
+	return model.ArtistCreator{
+		User: model.User{
+			UserID:          c.UserID,
+			UserName:        c.UserName,
+			ProfilePath:     c.ProfilePath,
+			State:           c.State,
+			LastUpdatedTime: c.LastUpdatedTime,
+		},
+		ArtistID:       c.ArtistID,
+		ArtistIntro:    c.ArtistIntro,
+		PaymentMethods: c.PaymentMethods,
+	}
+}

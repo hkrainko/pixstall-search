@@ -95,13 +95,13 @@ func (a ArtistMessageBroker) StartArtistQueue() {
 
 			switch d.RoutingKey {
 			case "artist.event.created":
-				err := a.registerNewArtist(ctx, d.Body)
+				err := a.artistCreated(ctx, d.Body)
 				if err != nil {
 					//TODO: error handling, store it ?
 				}
 				cancel()
 			case "artist.event.updated":
-				err := a.UpdateArtistUser(ctx, d.Body)
+				err := a.artistUpdated(ctx, d.Body)
 				if err != nil {
 					//TODO: error handling, store it ?
 				}
@@ -131,7 +131,11 @@ func (a ArtistMessageBroker) artistCreated(ctx context.Context, body []byte) err
 	if err != nil {
 		return err
 	}
-	return a.useCase.RegisterNewArtist(ctx, req.RegInfo)
+	_, err = a.useCase.CreateArtist(ctx, req.ToDomainArtistCreator())
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a ArtistMessageBroker) artistUpdated(ctx context.Context, body []byte) error {
@@ -140,5 +144,9 @@ func (a ArtistMessageBroker) artistUpdated(ctx context.Context, body []byte) err
 	if err != nil {
 		return err
 	}
-	return a.artistUseCase.RegisterNewArtist(ctx, req.RegInfo)
+	_, err = a.useCase.UpdateArtist(ctx, req.ToDomainArtistUpdater())
+	if err != nil {
+		return err
+	}
+	return nil
 }
