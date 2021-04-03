@@ -30,8 +30,8 @@ func setup() {
 	ctx = context.Background()
 	repo = NewElasticSearchDocumentRepo(ElasticSearchHost{
 		ApiPath: apiPath,
-		Key: key,
-		token: token,
+		Key:     key,
+		token:   token,
 	})
 }
 
@@ -41,15 +41,15 @@ func teardown() {
 
 func TestAddArtist(t *testing.T) {
 	artistCreator := model.ArtistCreator{
-		User:           model.User{
+		User: model.User{
 			UserID:          "userID",
 			UserName:        "userName",
 			ProfilePath:     "profilePath",
 			State:           model.UserStateActive,
 			LastUpdatedTime: time.Now(),
 		},
-		ArtistID:       "artistID",
-		ArtistIntro:    model.ArtistIntro{
+		ArtistID: "artistID",
+		ArtistIntro: model.ArtistIntro{
 			YearOfDrawing: 5,
 			ArtTypes:      []string{"A", "B"},
 		},
@@ -61,5 +61,32 @@ func TestAddArtist(t *testing.T) {
 }
 
 func TestUpdateArtist(t *testing.T) {
-
+	userName := "userName_update"
+	now := time.Now()
+	avRatings := 5
+	artistUpdater := model.ArtistUpdater{
+		ArtistID:    "artistID",
+		UserName:    &userName,
+		ProfilePath: nil,
+		State:       nil,
+		ArtistIntro: nil,
+		ArtistBoard: &model.ArtistBoard{
+			Desc: "",
+		},
+		PaymentMethods: nil,
+		CommissionDetails: &model.CommissionDetails{
+			CommissionRequestCount: 0,
+			CommissionAcceptCount:  0,
+			CommissionSuccessCount: 0,
+			AvgRatings:             &avRatings,
+			LastRequestTime:        &now,
+		},
+		LastUpdateTime: &now,
+	}
+	id, err := repo.UpdateArtist(ctx, artistUpdater)
+	assert.NoError(t, err)
+	assert.NotNil(t, id)
+	if id != nil {
+		assert.Equal(t, "artistID", *id)
+	}
 }

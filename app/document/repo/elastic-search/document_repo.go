@@ -24,25 +24,24 @@ func (e ElasticSearchHost) BearToken() string {
 
 type elasticSearchDocumentRepo struct {
 	host ElasticSearchHost
+	client *resty.Client
 }
 
 func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
 	return &elasticSearchDocumentRepo{
 		host: host,
+		client: resty.New(),
 	}
 }
 
 func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.ArtistCreator) (*string, error) {
-	client := resty.New()
-
 	var resp []model4.AddArtistResponse
-
-	_, err := client.
+	_, err := e.client.
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
 		SetHeader("Authorization", e.host.BearToken()).
-		SetBody(model4.NewAddArtistRequestFromArtistCreator(creator)).
+		SetBody(model4.NewAddArtistRequest(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artist-search-engine/documents")
 	if err != nil {
@@ -57,7 +56,24 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater model.ArtistUpdater) (*string, error) {
-	panic("implement me")
+	var resp []model4.UpdateArtistResponse
+	_, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewUpdateArtistRequest(updater)).
+		SetResult(&resp).
+		Patch(e.host.ApiPath + "/artist-search-engine/documents")
+	if err != nil {
+		log.Println(err)
+		return nil, error2.UnknownError
+	}
+	if len(resp[0].Errors) > 0 {
+		log.Printf("%v", resp[0].Errors)
+		return nil, error2.UnknownError
+	}
+	return &resp[0].ID, nil
 }
 
 func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model2.ArtworkCreator) (*string, error) {

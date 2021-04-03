@@ -8,12 +8,12 @@ import (
 type AddArtistRequest struct {
 	ID             string `json:"id"`
 	User           `json:",inline"`
-	ArtTypes       []string `json:"art_types"`
+	ArtistID       string   `json:"artist_id"`
 	PaymentMethods []string `json:"payment_methods"`
 
 	// ArtistIntro
-	ArtistID      string `json:"artist_id"`
-	YearOfDrawing int    `json:"year_of_drawing"`
+	YearOfDrawing int      `json:"year_of_drawing"`
+	ArtTypes      []string `json:"art_types"`
 
 	// CommissionDetails
 	CommissionRequestCount int        `json:"commission_request_count"`
@@ -32,7 +32,7 @@ type User struct {
 	LastUpdatedTime time.Time       `json:"last_updated_time"`
 }
 
-func NewAddArtistRequestFromArtistCreator(creator model.ArtistCreator) AddArtistRequest {
+func NewAddArtistRequest(creator model.ArtistCreator) AddArtistRequest {
 	return AddArtistRequest{
 		User: User{
 			UserID:          creator.UserID,
