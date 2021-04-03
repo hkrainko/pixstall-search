@@ -6,10 +6,11 @@ import (
 )
 
 type AddArtistRequest struct {
-	User           `json:",inline"`
-	ArtistID       string      `json:"artist_id"`
-	ArtistIntro    ArtistIntro `json:"artist_intro"`
-	PaymentMethods []string    `json:"payment_methods"`
+	User                     `json:",inline"`
+	ArtistID                 string   `json:"artist_id"`
+	ArtistIntroYearOfDrawing int      `json:"year_of_drawing"`
+	ArtistIntroArtTypes      []string `json:"art_types"`
+	PaymentMethods           []string `json:"payment_methods"`
 }
 
 type User struct {
@@ -18,11 +19,6 @@ type User struct {
 	ProfilePath     string          `json:"profile_path"`
 	State           model.UserState `json:"state"`
 	LastUpdatedTime time.Time       `json:"last_updated_time"`
-}
-
-type ArtistIntro struct {
-	YearOfDrawing int      `json:"year_Of_drawing"`
-	ArtTypes      []string `json:"art_types"`
 }
 
 func NewAddArtistRequestFromArtistCreator(creator model.ArtistCreator) AddArtistRequest {
@@ -34,16 +30,14 @@ func NewAddArtistRequestFromArtistCreator(creator model.ArtistCreator) AddArtist
 			State:           creator.State,
 			LastUpdatedTime: creator.LastUpdatedTime,
 		},
-		ArtistID: creator.ArtistID,
-		ArtistIntro: ArtistIntro{
-			YearOfDrawing: creator.ArtistIntro.YearOfDrawing,
-			ArtTypes:      creator.ArtistIntro.ArtTypes,
-		},
-		PaymentMethods: creator.PaymentMethods,
+		ArtistID:                 creator.ArtistID,
+		ArtistIntroYearOfDrawing: creator.ArtistIntro.YearOfDrawing,
+		ArtistIntroArtTypes:      creator.ArtistIntro.ArtTypes,
+		PaymentMethods:           creator.PaymentMethods,
 	}
 }
 
 type AddArtistResponse struct {
-	ID     string      `json:"id"`
-	Errors interface{} `json:"errors"`
+	ID     string   `json:"id"`
+	Errors []string `json:"errors"`
 }

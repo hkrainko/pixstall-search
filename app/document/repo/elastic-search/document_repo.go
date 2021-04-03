@@ -35,7 +35,7 @@ func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
 func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.ArtistCreator) (*string, error) {
 	client := resty.New()
 
-	var resp model4.AddArtistResponse
+	var resp []model4.AddArtistResponse
 
 	r, err := client.
 		R().
@@ -45,12 +45,11 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 		SetBody(model4.NewAddArtistRequestFromArtistCreator(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artist-search-engine/documents")
-
-	if err != nil {
+	if err != nil || len(resp[0].Errors) > 0 {
 		log.Println(r)
 		return nil, error2.UnknownError
 	}
-	return &resp.ID, nil
+	return &resp[0].ID, nil
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater model.ArtistUpdater) (*string, error) {
