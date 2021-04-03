@@ -37,7 +37,7 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 
 	var resp []model4.AddArtistResponse
 
-	r, err := client.
+	_, err := client.
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
@@ -45,8 +45,12 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 		SetBody(model4.NewAddArtistRequestFromArtistCreator(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artist-search-engine/documents")
-	if err != nil || len(resp[0].Errors) > 0 {
-		log.Println(r)
+	if err != nil {
+		log.Println(err)
+		return nil, error2.UnknownError
+	}
+	if len(resp[0].Errors) > 0 {
+		log.Printf("%v", resp[0].Errors)
 		return nil, error2.UnknownError
 	}
 	return &resp[0].ID, nil

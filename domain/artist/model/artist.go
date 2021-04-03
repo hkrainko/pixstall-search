@@ -16,6 +16,7 @@ type User struct {
 	UserName        string    `json:"userName"`
 	ProfilePath     string    `json:"profilePath"`
 	State           UserState `json:"state"`
+	RegTime         time.Time `json:"regTime"`
 	LastUpdatedTime time.Time `json:"lastUpdatedTime"`
 }
 

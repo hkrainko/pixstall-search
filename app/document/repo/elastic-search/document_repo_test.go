@@ -57,5 +57,9 @@ func TestAddArtist(t *testing.T) {
 	}
 	id, err := repo.AddArtist(ctx, artistCreator)
 	assert.NoError(t, err)
-	assert.NotNil(t, id)
+	assert.Equal(t, "artistID", *id)
+}
+
+func TestUpdateArtist(t *testing.T) {
+
 }
