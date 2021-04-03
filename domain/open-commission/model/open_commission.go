@@ -7,10 +7,8 @@ type OpenCommission struct {
 	ArtistID         string             `json:"artistId" bson:"artistId"`
 	Title            string             `json:"title" bson:"title"`
 	Desc             string             `json:"desc" bson:"desc"`
-	PriceAmount      float64            `json:"priceAmount" bson:"priceAmount"`
-	PriceCurrency    float64            `json:"priceCurrent" bson:"priceCurrency"`
-	DayNeedFrom      int                `json:"dayNeedFrom" bson:"dayNeedFrom"`
-	DayNeedTo        int                `json:"dayNeedTo" bson:"dayNeedTo"`
+	Price            Price              `json:"price" bson:"price"`
+	DayNeed          DayNeed            `json:"dayNeed" bson:"dayNeed"`
 	SampleImagePaths []string           `json:"sampleImagePaths" bson:"sampleImagePaths"`
 	IsR18            bool               `json:"isR18" bson:"isR18"`
 	AllowBePrivate   bool               `json:"allowBePrivate" bson:"allowBePrivate"`
@@ -26,4 +24,22 @@ const (
 	OpenCommissionStateActive  OpenCommissionSate = "A"
 	OpenCommissionStateHidden  OpenCommissionSate = "H"
 	OpenCommissionStateRemoved OpenCommissionSate = "R"
+)
+
+type DayNeed struct {
+	From int `json:"from" bson:"from"`
+	To   int `json:"to" bson:"to"`
+}
+
+type Price struct {
+	Amount   float64  `json:"amount" bson:"amount"`
+	Currency Currency `json:"currency" bson:"currency"`
+}
+
+type Currency string
+
+const (
+	CurrencyHKD Currency = "HKD"
+	CurrencyTWD Currency = "TWD"
+	CurrencyUSE Currency = "USD"
 )

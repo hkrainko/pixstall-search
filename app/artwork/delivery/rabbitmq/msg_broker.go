@@ -117,12 +117,12 @@ func (a ArtworkMessageBroker) StartArtistQueue() {
 	<-forever
 }
 
-func (a ArtworkMessageBroker) StopArtistQueue() {
+func (a ArtworkMessageBroker) StopArtworkQueue() {
 	err := a.ch.Close()
 	if err != nil {
-		log.Printf("StopArtistQueue err %v", err)
+		log.Printf("StopArtworkQueue err %v", err)
 	}
-	log.Printf("StopArtistQueue success")
+	log.Printf("StopArtworkQueue success")
 }
 
 func (a ArtworkMessageBroker) artworkCreated(ctx context.Context, body []byte) error {
