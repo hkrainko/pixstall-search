@@ -1,43 +1,56 @@
 package elastic_search
 
 import (
-	"bytes"
 	"context"
-	"io/ioutil"
-	"net/http"
+	"github.com/go-resty/resty/v2"
+	"log"
+	model4 "pixstall-search/app/document/repo/elastic-search/model"
 	"pixstall-search/domain/artist/model"
 	model2 "pixstall-search/domain/artwork/model"
 	"pixstall-search/domain/document"
+	error2 "pixstall-search/domain/error"
 	model3 "pixstall-search/domain/open-commission/model"
 )
 
-type elasticSearchDocumentRepo struct {
-
+type ElasticSearchHost struct {
+	ApiPath string
+	Key string
+	token string
 }
 
-func NewElasticSearchDocumentRepo() document.Repo {
-	return &elasticSearchDocumentRepo{
+func (e ElasticSearchHost) BearToken() string {
+	return "Bearer " + e.token
+}
 
+type elasticSearchDocumentRepo struct {
+	host ElasticSearchHost
+}
+
+func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
+	return &elasticSearchDocumentRepo{
+		host: host,
 	}
 }
 
 func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.ArtistCreator) (*string, error) {
-	var jsonStr []byte
-	req, err := http.NewRequest("POST", "", bytes.NewBuffer(jsonStr))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("", "")
-	req.Header.Set("", "")
+	client := resty.New()
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
+	var resp model4.AddArtistResponse
 
-	body, _ := ioutil.ReadAll(resp.Body);
+	r, err := client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewAddArtistRequestFromArtistCreator(creator)).
+		SetResult(&resp).
+		Post(e.host.ApiPath + "/artist-search-engine/documents")
+
+	if err != nil {
+		log.Println(r)
+		return nil, error2.UnknownError
+	}
+	return &resp.ID, nil
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater model.ArtistUpdater) (*string, error) {
