@@ -41,7 +41,6 @@ func (e elasticSearchSearchRepo) SearchArtists(ctx context.Context, query string
 		SetBody(req.NewSearchArtistRequest(query, filter, sorter)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artists-search-engine/search")
-
 	log.Println(r)
 	log.Println(err)
 	if err := checkIfError(r, err); err != nil {

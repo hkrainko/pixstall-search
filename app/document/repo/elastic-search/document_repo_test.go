@@ -10,6 +10,7 @@ import (
 	model2 "pixstall-search/domain/artwork/model"
 	"pixstall-search/domain/document"
 	model3 "pixstall-search/domain/open-commission/model"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -43,11 +44,12 @@ func teardown() {
 }
 
 func TestAddArtist(t *testing.T) {
+	profilePath := "profilePath"
 	artistCreator := model.ArtistCreator{
 		User: model.User{
 			UserID:          "artistID",
 			UserName:        "userName",
-			ProfilePath:     "profilePath",
+			ProfilePath:     &profilePath,
 			State:           model.UserStateActive,
 			RegTime:         time.Now(),
 			LastUpdatedTime: time.Now(),
@@ -62,6 +64,31 @@ func TestAddArtist(t *testing.T) {
 	id, err := repo.AddArtist(ctx, artistCreator)
 	assert.NoError(t, err)
 	assert.Equal(t, "artistID", *id)
+}
+
+func TestAddArtist_multiple(t *testing.T) {
+	var err error
+	for i := range [1000]int{} {
+		profilePath := faker.ImageURL(200, 100)
+		artistCreator := model.ArtistCreator{
+			User: model.User{
+				UserID:          "artistID" + strconv.Itoa(i),
+				UserName:        faker.Name(),
+				ProfilePath:     &profilePath,
+				State:           model.UserStateActive,
+				RegTime:         faker.Date(),
+				LastUpdatedTime: faker.Date(),
+			},
+			ArtistID: "artistID" + strconv.Itoa(i),
+			ArtistIntro: model.ArtistIntro{
+				YearOfDrawing: faker.Number(0, 20),
+				ArtTypes:      []string{faker.Word(), faker.Word(), faker.Word()},
+			},
+			PaymentMethods: []string{faker.Word()},
+		}
+		_, err = repo.AddArtist(ctx, artistCreator)
+	}
+	assert.NoError(t, err)
 }
 
 func TestUpdateArtist(t *testing.T) {
