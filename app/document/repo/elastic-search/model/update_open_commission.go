@@ -9,6 +9,7 @@ type UpdateOpenCommissionRequest struct {
 	ID               string                     `json:"id"`
 	Title            *string                    `json:"title,omitempty"`
 	Desc             *string                    `json:"desc,omitempty"`
+	ConvPrice        *float64                   `json:"conv_price,omitempty"`
 	PriceAmount      *float64                   `json:"price_amount,omitempty"`
 	PriceCurrency    *model.Currency            `json:"price_currency,omitempty"`
 	DayNeedFrom      *int                       `json:"day_need_from,omitempty"`
@@ -23,9 +24,12 @@ type UpdateOpenCommissionRequest struct {
 
 func NewUpdateOpenCommissionRequest(updater model.OpenCommissionUpdater) UpdateOpenCommissionRequest {
 
+	var convPrice *float64
 	var priceAmount *float64
 	var priceCurrency *model.Currency
 	if updater.Price != nil {
+		cp := updater.Price.GetConvPrice()
+		convPrice = &cp
 		priceAmount = &updater.Price.Amount
 		priceCurrency = &updater.Price.Currency
 	}
@@ -39,6 +43,7 @@ func NewUpdateOpenCommissionRequest(updater model.OpenCommissionUpdater) UpdateO
 		ID:               updater.ID,
 		Title:            updater.Title,
 		Desc:             updater.Desc,
+		ConvPrice:        convPrice,
 		PriceAmount:      priceAmount,
 		PriceCurrency:    priceCurrency,
 		DayNeedFrom:      dayNeedFrom,

@@ -90,7 +90,6 @@ func (r SearchArtworksResponse) ToDomainResult() model.GetArtworksResult {
 		if err != nil {
 			continue
 		}
-
 		artworks = append(artworks, model.Artwork{
 			ID:                v.ID.Raw,
 			OpenCommissionID:  v.OpenCommissionID.Raw,

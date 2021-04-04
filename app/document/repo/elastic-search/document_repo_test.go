@@ -154,6 +154,32 @@ func TestAddArtwork(t *testing.T) {
 	}
 }
 
+func TestAddArtwork_multiple(t *testing.T) {
+	var err error
+	for i := range [100]int{} {
+		artistProfilePath := faker.ImageURL(100, 100)
+		creator := model2.ArtworkCreator{
+			ID:                "artworkID" + strconv.Itoa(i),
+			CommissionID:      faker.UUID(),
+			OpenCommissionID:  faker.UUID(),
+			ArtistID:          faker.UUID(),
+			ArtistName:        faker.Name(),
+			ArtistProfilePath: &artistProfilePath,
+			DayUsed:           time.Duration(faker.Day()),
+			IsR18:             faker.Bool(),
+			Anonymous:         faker.Bool(),
+			Path:              faker.ImageURL(1000, 1000),
+			Rating:            faker.RandomInt([]int{1, 2, 3, 4, 5}),
+			CreateTime:        faker.Date(),
+			StartTime:         faker.Date(),
+			CompletedTime:     faker.Date(),
+			State:             model2.ArtworkStateActive,
+		}
+		_, err = repo.AddArtwork(ctx, creator)
+	}
+	assert.NoError(t, err)
+}
+
 func TestUpdateArtwork(t *testing.T) {
 	artistName := faker.Name()
 	artistProfilePath := faker.ImageURL(100, 100)

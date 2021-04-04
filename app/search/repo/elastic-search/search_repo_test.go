@@ -109,7 +109,7 @@ func TestSearchArtworks(t *testing.T) {
 		CompletedTime:  nil,
 		LastUpdateTime: nil,
 	}
-	getArtworkResult, err := repo.SearchArtworks(ctx, "Veda", filter, sorter)
+	getArtworkResult, err := repo.SearchArtworks(ctx, "df", filter, sorter)
 	assert.NoError(t, err)
 	assert.NotNil(t, getArtworkResult)
 	if getArtworkResult != nil {

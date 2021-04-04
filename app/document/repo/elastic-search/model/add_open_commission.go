@@ -12,6 +12,7 @@ type AddOpenCommissionRequest struct {
 	Desc     string `json:"desc"`
 
 	// Price
+	ConvPrice     float64        `json:"conv_price"`
 	PriceAmount   float64        `json:"price_amount"`
 	PriceCurrency model.Currency `json:"price_currency"`
 
@@ -34,6 +35,7 @@ func NewAddOpenCommissionRequest(creator model.OpenCommissionCreator) AddOpenCom
 		ArtistID:         creator.ArtistID,
 		Title:            creator.Title,
 		Desc:             creator.Desc,
+		ConvPrice:        creator.Price.GetConvPrice(),
 		PriceAmount:      creator.Price.Amount,
 		PriceCurrency:    creator.Price.Currency,
 		DayNeedForm:      creator.DayNeed.From,
