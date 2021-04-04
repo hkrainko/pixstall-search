@@ -10,8 +10,10 @@ import (
 	"pixstall-search/domain/artist/model"
 	model3 "pixstall-search/domain/artwork/model"
 	model2 "pixstall-search/domain/model"
+	model4 "pixstall-search/domain/open-commission/model"
 	"pixstall-search/domain/search"
 	"testing"
+	"time"
 )
 
 var repo search.Repo
@@ -114,5 +116,46 @@ func TestSearchArtworks(t *testing.T) {
 	assert.NotNil(t, getArtworkResult)
 	if getArtworkResult != nil {
 		assert.Greater(t, len(getArtworkResult.Artworks), 0)
+	}
+}
+
+func TestSearchOpenCommissions(t *testing.T) {
+	state := []model4.OpenCommissionState{model4.OpenCommissionStateActive}
+	filter := model4.OpenCommissionFilter{
+		State: &state,
+		PriceAmount: &model2.FloatRange{
+			From: nil,
+			To:   nil,
+		},
+		PriceCurrency: nil,
+		DayNeedFrom: &model2.TimeRange{
+			From: &time.Time{},
+			To:   &time.Time{},
+		},
+		DayNeedTo: &model2.TimeRange{
+			From: &time.Time{},
+			To:   &time.Time{},
+		},
+		IsR18:          nil,
+		AllowBePrivate: nil,
+		AllowAnonymous: nil,
+		PageFilter: model2.PageFilter{
+			Current: 1,
+			Size:    50,
+		},
+	}
+	sorter := model4.OpenCommissionSorter{
+		ArtistID:        nil,
+		Price:           nil,
+		DayNeedFrom:     nil,
+		DayNeedTo:       nil,
+		CreateTime:      nil,
+		LastUpdatedTime: nil,
+	}
+	getOpenCommResult, err := repo.SearchOpenCommissions(ctx, "open", filter, sorter)
+	assert.NoError(t, err)
+	assert.NotNil(t, getOpenCommResult)
+	if getOpenCommResult != nil {
+		assert.Greater(t, len(getOpenCommResult.OpenCommissions), 0)
 	}
 }

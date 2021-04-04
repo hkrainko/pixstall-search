@@ -69,8 +69,23 @@ func (e elasticSearchSearchRepo) SearchArtworks(ctx context.Context, query strin
 	return &result, nil
 }
 
-func (e elasticSearchSearchRepo) SearchOpenCommissions(ctx context.Context, query string, filter model3.OpenCommissionFilter, sorter model3.OpenCommissionSorter) (*[]model3.OpenCommission, error) {
-	panic("implement me")
+func (e elasticSearchSearchRepo) SearchOpenCommissions(ctx context.Context, query string, filter model3.OpenCommissionFilter, sorter model3.OpenCommissionSorter) (*model3.GetOpenCommissionsResult, error) {
+	var resp resp2.SearchOpenCommissionsResponse
+	r, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(req.NewSearchOpenCommissionsRequest(query, filter, sorter)).
+		SetResult(&resp).
+		Post(e.host.ApiPath + "/open-commissions-search-engine/search")
+	log.Println(r)
+	log.Println(err)
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
+	}
+	result := resp.ToDomainResult()
+	return &result, nil
 }
 
 func checkIfError(resp *resty.Response, err error) error {
