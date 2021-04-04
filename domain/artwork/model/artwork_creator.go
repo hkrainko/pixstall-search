@@ -18,6 +18,8 @@ type ArtworkCreator struct {
 	Path   string
 	Rating int
 
+	CreateTime    time.Time
 	StartTime     time.Time
 	CompletedTime time.Time
+	State         ArtworkState
 }
