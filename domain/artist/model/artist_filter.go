@@ -1,6 +1,7 @@
 package model
 
 import (
+	model4 "pixstall-search/domain/model"
 	"time"
 )
 
@@ -29,6 +30,8 @@ type ArtistFilter struct {
 
 	// LastRequestTime
 	LastRequestTime *TimeRange
+
+	PageFilter      model4.PageFilter
 }
 
 type TimeRange struct {

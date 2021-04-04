@@ -7,6 +7,7 @@ import (
 
 type SearchArtistsRequest struct {
 	Query   string               `json:"query"`
+	Page    model2.PageFilter    `json:"page"`
 	Filters *SearchArtistsFilter `json:"filters,omitempty"`
 	Sort    *SearchArtistsSorter `json:"sort,omitempty"`
 }
@@ -19,6 +20,7 @@ func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter mode
 	s := getSorter(sorter)
 	return SearchArtistsRequest{
 		Query:   query,
+		Page:    filter.PageFilter,
 		Filters: &f,
 		Sort:    &s,
 	}
@@ -51,6 +53,20 @@ type SearchArtistsFilter struct {
 }
 
 func getSorter(sorter model.ArtistSorter) SearchArtistsSorter {
+	if sorter.ArtistID == nil &&
+		sorter.UserName == nil &&
+		sorter.RegTime == nil &&
+		sorter.YearOfDrawing == nil &&
+		sorter.CommissionRequestCount == nil &&
+		sorter.CommissionAcceptCount == nil &&
+		sorter.CommissionSuccessCount == nil &&
+		sorter.AvgRatings == nil &&
+		sorter.LastRequestTime == nil {
+		desc := model2.SortOrderDescending
+		return SearchArtistsSorter{
+			Score: &desc,
+		}
+	}
 	return SearchArtistsSorter{
 		ArtistID:               sorter.ArtistID,
 		UserName:               sorter.UserName,
@@ -65,13 +81,14 @@ func getSorter(sorter model.ArtistSorter) SearchArtistsSorter {
 }
 
 type SearchArtistsSorter struct {
-	ArtistID               *model2.SortOrder
-	UserName               *model2.SortOrder
-	RegTime                *model2.SortOrder
-	YearOfDrawing          *model2.SortOrder
-	CommissionRequestCount *model2.SortOrder
-	CommissionAcceptCount  *model2.SortOrder
-	CommissionSuccessCount *model2.SortOrder
-	AvgRatings             *model2.SortOrder
-	LastRequestTime        *model2.SortOrder
+	Score                  *model2.SortOrder `json:"_score,omitempty"`
+	ArtistID               *model2.SortOrder `json:"artist_id,omitempty"`
+	UserName               *model2.SortOrder `json:"user_name,omitempty"`
+	RegTime                *model2.SortOrder `json:"reg_time,omitempty"`
+	YearOfDrawing          *model2.SortOrder `json:"year_of_drawing,omitempty"`
+	CommissionRequestCount *model2.SortOrder `json:"commission_request_count,omitempty"`
+	CommissionAcceptCount  *model2.SortOrder `json:"commission_accept_count,omitempty"`
+	CommissionSuccessCount *model2.SortOrder `json:"commission_success_count,omitempty"`
+	AvgRatings             *model2.SortOrder `json:"avg_ratings,omitempty"`
+	LastRequestTime        *model2.SortOrder `json:"last_request_time,omitempty"`
 }

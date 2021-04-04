@@ -8,6 +8,7 @@ import (
 	"os"
 	elastic_search "pixstall-search/app/document/repo/elastic-search"
 	"pixstall-search/domain/artist/model"
+	model2 "pixstall-search/domain/model"
 	"pixstall-search/domain/search"
 	"testing"
 )
@@ -41,8 +42,9 @@ func teardown() {
 }
 
 func TestSearchArtists(t *testing.T) {
+	state := []model.UserState{model.UserStateActive}
 	filter := model.ArtistFilter{
-		State:                  nil,
+		State:                  &state,
 		RegTime:                nil,
 		PaymentMethods:         nil,
 		YearOfDrawing:          nil,
@@ -51,6 +53,10 @@ func TestSearchArtists(t *testing.T) {
 		CommissionSuccessCount: nil,
 		AvgRatings:             nil,
 		LastRequestTime:        nil,
+		PageFilter: model2.PageFilter{
+			Current: 1,
+			Size:    50,
+		},
 	}
 	sorter := model.ArtistSorter{
 		ArtistID:               nil,
