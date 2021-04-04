@@ -1,50 +1,34 @@
 package model
 
 import (
-	model4 "pixstall-search/domain/model"
-	"time"
+	"pixstall-search/domain/model"
 )
 
 type ArtistFilter struct {
 	State *[]UserState
 
 	// RegTime
-	RegTime *TimeRange
+	RegTime *model.TimeRange
 
 	PaymentMethods *[]string
 
 	// YearOfDrawing
-	YearOfDrawing *TimeRange
+	YearOfDrawing *model.TimeRange
 
 	// CommissionRequestCount
-	CommissionRequestCount *IntRange
+	CommissionRequestCount *model.IntRange
 
 	// CommissionRequestCount
-	CommissionAcceptCount *IntRange
+	CommissionAcceptCount *model.IntRange
 
 	// CommissionSuccessCount
-	CommissionSuccessCount *IntRange
+	CommissionSuccessCount *model.IntRange
 
 	// AvgRatings
-	AvgRatings *FloatRange
+	AvgRatings *model.FloatRange
 
 	// LastRequestTime
-	LastRequestTime *TimeRange
+	LastRequestTime *model.TimeRange
 
-	PageFilter      model4.PageFilter
-}
-
-type TimeRange struct {
-	From *time.Time `json:"from,omitempty"`
-	To   *time.Time `json:"to,omitempty"`
-}
-
-type IntRange struct {
-	From *time.Time `json:"from,omitempty"`
-	To   *time.Time `json:"to,omitempty"`
-}
-
-type FloatRange struct {
-	From *float64 `json:"from,omitempty"`
-	To   *float64 `json:"to,omitempty"`
+	PageFilter model.PageFilter
 }

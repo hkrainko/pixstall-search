@@ -8,6 +8,7 @@ import (
 	"os"
 	elastic_search "pixstall-search/app/document/repo/elastic-search"
 	"pixstall-search/domain/artist/model"
+	model3 "pixstall-search/domain/artwork/model"
 	model2 "pixstall-search/domain/model"
 	"pixstall-search/domain/search"
 	"testing"
@@ -74,5 +75,44 @@ func TestSearchArtists(t *testing.T) {
 	assert.NotNil(t, getArtistsResult)
 	if getArtistsResult != nil {
 		assert.Greater(t, len(getArtistsResult.Artists), 0)
+	}
+}
+
+func TestSearchArtworks(t *testing.T) {
+	state := []model3.ArtworkState{model3.ArtworkStateActive}
+	filter := model3.ArtworkFilter{
+		State:          &state,
+		DayUsed:        nil,
+		IsR18:          nil,
+		Anonymous:      nil,
+		Rating:         nil,
+		Views:          nil,
+		FavorCount:     nil,
+		CreateTime:     nil,
+		StartTime:      nil,
+		CompletedTime:  nil,
+		LastUpdateTime: nil,
+		PageFilter:     model2.PageFilter{
+			Current: 1,
+			Size:    100,
+		},
+	}
+	sorter := model3.ArtworkSorter{
+		ArtistID:       nil,
+		UserName:       nil,
+		DayUsed:        nil,
+		Rating:         nil,
+		Views:          nil,
+		FavorCount:     nil,
+		CreateTime:     nil,
+		StartTime:      nil,
+		CompletedTime:  nil,
+		LastUpdateTime: nil,
+	}
+	getArtworkResult, err := repo.SearchArtworks(ctx, "Veda", filter, sorter)
+	assert.NoError(t, err)
+	assert.NotNil(t, getArtworkResult)
+	if getArtworkResult != nil {
+		assert.Greater(t, len(getArtworkResult.Artworks), 0)
 	}
 }

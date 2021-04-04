@@ -13,8 +13,8 @@ type SearchArtistsRequest struct {
 }
 
 func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter model.ArtistSorter) SearchArtistsRequest {
-	f := getFilter(filter)
-	s := getSorter(sorter)
+	f := getSearchArtistsFilter(filter)
+	s := getSearchArtistsSorter(sorter)
 	return SearchArtistsRequest{
 		Query:   query,
 		Page:    filter.PageFilter,
@@ -23,7 +23,7 @@ func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter mode
 	}
 }
 
-func getFilter(filter model.ArtistFilter) SearchArtistsFilter {
+func getSearchArtistsFilter(filter model.ArtistFilter) SearchArtistsFilter {
 	return SearchArtistsFilter{
 		State:                  filter.State,
 		RegTime:                filter.RegTime,
@@ -39,17 +39,17 @@ func getFilter(filter model.ArtistFilter) SearchArtistsFilter {
 
 type SearchArtistsFilter struct {
 	State                  *[]model.UserState `json:"state,omitempty"`
-	RegTime                *model.TimeRange   `json:"reg_time,omitempty"`
+	RegTime                *model2.TimeRange   `json:"reg_time,omitempty"`
 	PaymentMethods         *[]string          `json:"payment_methods,omitempty"`
-	YearOfDrawing          *model.TimeRange   `json:"year_of_drawing,omitempty"`
-	CommissionRequestCount *model.IntRange    `json:"commission_request_count,omitempty"`
-	CommissionAcceptCount  *model.IntRange    `json:"commission_accept_count,omitempty"`
-	CommissionSuccessCount *model.IntRange    `json:"commission_success_count,omitempty"`
-	AvgRatings             *model.FloatRange  `json:"avg_ratings,omitempty"`
-	LastRequestTime        *model.TimeRange   `json:"last_request_time,omitempty"`
+	YearOfDrawing          *model2.TimeRange   `json:"year_of_drawing,omitempty"`
+	CommissionRequestCount *model2.IntRange    `json:"commission_request_count,omitempty"`
+	CommissionAcceptCount  *model2.IntRange    `json:"commission_accept_count,omitempty"`
+	CommissionSuccessCount *model2.IntRange    `json:"commission_success_count,omitempty"`
+	AvgRatings             *model2.FloatRange  `json:"avg_ratings,omitempty"`
+	LastRequestTime        *model2.TimeRange   `json:"last_request_time,omitempty"`
 }
 
-func getSorter(sorter model.ArtistSorter) SearchArtistsSorter {
+func getSearchArtistsSorter(sorter model.ArtistSorter) SearchArtistsSorter {
 	if sorter.ArtistID == nil &&
 		sorter.UserName == nil &&
 		sorter.RegTime == nil &&
