@@ -33,7 +33,7 @@ type CommissionDetails struct {
 	CommissionRequestCount int        `json:"commissionRequestCount"`
 	CommissionAcceptCount  int        `json:"commissionAcceptCount"`
 	CommissionSuccessCount int        `json:"commissionSuccessCount"`
-	AvgRatings             *int       `json:"avgRatings,omitempty"`
+	AvgRatings             *float64   `json:"avgRatings,omitempty"`
 	LastRequestTime        *time.Time `json:"lastRequestTime,omitempty"`
 }
 

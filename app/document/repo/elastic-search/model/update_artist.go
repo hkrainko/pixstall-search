@@ -26,7 +26,7 @@ type UpdateArtistRequest struct {
 	CommissionRequestCount *int       `json:"commission_request_count,omitempty"`
 	CommissionAcceptCount  *int       `json:"commission_accept_count,omitempty"`
 	CommissionSuccessCount *int       `json:"commission_success_count,omitempty"`
-	AvgRatings             *int       `json:"avg_ratings,omitempty"`
+	AvgRatings             *float64   `json:"avg_ratings,omitempty"`
 	LastRequestTime        *time.Time `json:"last_request_time,omitempty"`
 }
 

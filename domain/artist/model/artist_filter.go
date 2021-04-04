@@ -1,32 +1,47 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type ArtistFilter struct {
 	State *[]UserState
 
 	// RegTime
-	RegTimeFrom *time.Time
-	RegTimeTo   *time.Time
+	RegTime *TimeRange
 
 	PaymentMethods *[]string
 
 	// YearOfDrawing
-	YearOfDrawingFrom *int
-	YearOfDrawingTo   *int
+	YearOfDrawing *TimeRange
 
 	// CommissionRequestCount
-	CommissionRequestCountFrom *int
-	CommissionRequestCountTo   *int
+	CommissionRequestCount *IntRange
+
+	// CommissionRequestCount
+	CommissionAcceptCount *IntRange
 
 	// CommissionSuccessCount
-	CommissionSuccessCountFrom *int
-	CommissionSuccessCountTo   *int
+	CommissionSuccessCount *IntRange
 
 	// AvgRatings
-	AvgRatingsMin *int
+	AvgRatings *FloatRange
 
 	// LastRequestTime
-	LastRequestTimeFrom *time.Time
-	LastRequestTimeTo   *time.Time
+	LastRequestTime *TimeRange
+}
+
+type TimeRange struct {
+	From *time.Time `json:"from,omitempty"`
+	To   *time.Time `json:"to,omitempty"`
+}
+
+type IntRange struct {
+	From *time.Time `json:"from,omitempty"`
+	To   *time.Time `json:"to,omitempty"`
+}
+
+type FloatRange struct {
+	From *float64 `json:"from,omitempty"`
+	To   *float64 `json:"to,omitempty"`
 }

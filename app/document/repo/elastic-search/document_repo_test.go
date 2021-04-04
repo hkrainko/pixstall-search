@@ -19,8 +19,7 @@ var ctx context.Context
 var faker *gofakeit.Faker
 
 const apiPath = "http://localhost:3002/api/as/v1/engines"
-const key = "search-21ovx6yqaffz92sxw8qpu23p"
-const token = "private-jxcq12x5tuko6rkbh28gkbdk"
+const key = "private-jxcq12x5tuko6rkbh28gkbdk"
 
 func TestMain(m *testing.M) {
 	faker = gofakeit.New(0)
@@ -36,7 +35,6 @@ func setup() {
 	repo = NewElasticSearchDocumentRepo(ElasticSearchHost{
 		ApiPath: apiPath,
 		Key:     key,
-		token:   token,
 	})
 }
 
@@ -71,7 +69,7 @@ func TestUpdateArtist(t *testing.T) {
 	profilePath := "profilePath_update"
 	state := model.UserStateTerminated
 	now := time.Now()
-	avRatings := 5
+	avgRatings := 3.2
 	artistUpdater := model.ArtistUpdater{
 		ArtistID:    "artistID",
 		UserName:    &userName,
@@ -89,7 +87,7 @@ func TestUpdateArtist(t *testing.T) {
 			CommissionRequestCount: 99,
 			CommissionAcceptCount:  99,
 			CommissionSuccessCount: 99,
-			AvgRatings:             &avRatings,
+			AvgRatings:             &avgRatings,
 			LastRequestTime:        &now,
 		},
 		LastUpdateTime: &now,
@@ -160,7 +158,7 @@ func TestUpdateArtwork(t *testing.T) {
 func TestAddOpenCommission(t *testing.T) {
 
 	creator := model3.OpenCommissionCreator{
-		ID:      "openCommissionID",
+		ID:       "openCommissionID",
 		ArtistID: faker.UUID(),
 		Title:    faker.Sentence(10),
 		Desc:     faker.Paragraph(2, 3, 4, "\n"),
@@ -172,17 +170,17 @@ func TestAddOpenCommission(t *testing.T) {
 			From: faker.Number(10, 20),
 			To:   faker.Number(20, 30),
 		},
-		IsR18:            faker.Bool(),
-		AllowBePrivate:   faker.Bool(),
-		AllowAnonymous:   faker.Bool(),
+		IsR18:          faker.Bool(),
+		AllowBePrivate: faker.Bool(),
+		AllowAnonymous: faker.Bool(),
 		SampleImagePaths: []string{
 			faker.ImageURL(100, 100),
 			faker.ImageURL(100, 100),
 			faker.ImageURL(100, 100),
 		},
-		State:            model3.OpenCommissionStateActive,
-		CreateTime:       faker.Date(),
-		LastUpdatedTime:  faker.Date(),
+		State:           model3.OpenCommissionStateActive,
+		CreateTime:      faker.Date(),
+		LastUpdatedTime: faker.Date(),
 	}
 	id, err := repo.AddOpenCommission(ctx, creator)
 	assert.NoError(t, err)
@@ -201,14 +199,14 @@ func TestUpdateOpenCommission(t *testing.T) {
 	state := model3.OpenCommissionStateRemoved
 
 	updater := model3.OpenCommissionUpdater{
-		ID:               "openCommissionID",
-		Title:            &title,
-		Desc:             &desc,
-		Price:            &model3.Price{
+		ID:    "openCommissionID",
+		Title: &title,
+		Desc:  &desc,
+		Price: &model3.Price{
 			Amount:   faker.Price(100, 300),
 			Currency: model3.CurrencyTWD,
 		},
-		DayNeed:          &model3.DayNeed{
+		DayNeed: &model3.DayNeed{
 			From: faker.Number(10, 20),
 			To:   faker.Number(20, 110),
 		},
@@ -217,11 +215,11 @@ func TestUpdateOpenCommission(t *testing.T) {
 			faker.ImageURL(100, 100),
 			faker.ImageURL(100, 100),
 		},
-		IsR18:            &isR18,
-		AllowBePrivate:   &allowBePrivate,
-		AllowAnonymous:   &allowAnonymous,
-		State:            &state,
-		LastUpdatedTime:  faker.Date(),
+		IsR18:           &isR18,
+		AllowBePrivate:  &allowBePrivate,
+		AllowAnonymous:  &allowAnonymous,
+		State:           &state,
+		LastUpdatedTime: faker.Date(),
 	}
 	id, err := repo.UpdateOpenCommission(ctx, updater)
 	assert.NoError(t, err)

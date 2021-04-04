@@ -16,11 +16,10 @@ import (
 type ElasticSearchHost struct {
 	ApiPath string
 	Key string
-	token string
 }
 
 func (e ElasticSearchHost) BearToken() string {
-	return "Bearer " + e.token
+	return "Bearer " + e.Key
 }
 
 type elasticSearchDocumentRepo struct {
