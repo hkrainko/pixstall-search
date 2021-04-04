@@ -18,7 +18,7 @@ func NewElasticSearchSearchRepo() search.Repo {
 	}
 }
 
-func (e elasticSearchSearchRepo) Suggestion(ctx context.Context, query string) (*[]string, error) {
+func (e elasticSearchSearchRepo) GetSuggestions(ctx context.Context, query string) (*[]string, error) {
 	panic("implement me")
 }
 

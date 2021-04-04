@@ -18,7 +18,7 @@ func NewSearchUseCase() search.UseCase {
 	}
 }
 
-func (s searchUseCase) Suggestion(ctx context.Context, query string) (*[]string, error) {
+func (s searchUseCase) GetSuggestions(ctx context.Context, query string) (*[]string, error) {
 	panic("implement me")
 }
 

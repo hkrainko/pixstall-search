@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/streadway/amqp"
 	"log"
