@@ -8,8 +8,8 @@ type TimeRange struct {
 }
 
 type IntRange struct {
-	From *time.Time `json:"from,omitempty"`
-	To   *time.Time `json:"to,omitempty"`
+	From *int `json:"from,omitempty"`
+	To   *int `json:"to,omitempty"`
 }
 
 type FloatRange struct {

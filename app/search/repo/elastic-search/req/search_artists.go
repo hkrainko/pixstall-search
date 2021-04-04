@@ -8,45 +8,72 @@ import (
 type SearchArtistsRequest struct {
 	Query   string               `json:"query"`
 	Page    model2.PageFilter    `json:"page"`
-	Filters *SearchArtistsFilter `json:"filters,omitempty"`
+	Filters *Filters             `json:"filters,omitempty"`
 	Sort    *SearchArtistsSorter `json:"sort,omitempty"`
 }
 
+type Filters struct {
+	All []map[string]interface{} `json:"all"`
+}
+
 func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter model.ArtistSorter) SearchArtistsRequest {
-	f := getSearchArtistsFilter(filter)
+	var filters *Filters
+	if fs := getSearchArtistsFilters(filter); len(fs) > 0 {
+		filters = &Filters{
+			All: fs,
+		}
+	}
 	s := getSearchArtistsSorter(sorter)
 	return SearchArtistsRequest{
 		Query:   query,
 		Page:    filter.PageFilter,
-		Filters: &f,
+		Filters: filters,
 		Sort:    &s,
 	}
 }
 
-func getSearchArtistsFilter(filter model.ArtistFilter) SearchArtistsFilter {
-	return SearchArtistsFilter{
-		State:                  filter.State,
-		RegTime:                filter.RegTime,
-		PaymentMethods:         filter.PaymentMethods,
-		YearOfDrawing:          filter.YearOfDrawing,
-		CommissionRequestCount: filter.CommissionRequestCount,
-		CommissionAcceptCount:  filter.CommissionAcceptCount,
-		CommissionSuccessCount: filter.CommissionSuccessCount,
-		AvgRatings:             filter.AvgRatings,
-		LastRequestTime:        filter.LastRequestTime,
+func getSearchArtistsFilters(filter model.ArtistFilter) []map[string]interface{} {
+	var filters []map[string]interface{}
+	if filter.State != nil {
+		filters = append(filters, map[string]interface{}{"state": filter.State})
 	}
+	if filter.RegTime != nil {
+		filters = append(filters, map[string]interface{}{"reg_time": filter.RegTime})
+	}
+	if filter.PaymentMethods != nil {
+		filters = append(filters, map[string]interface{}{"payment_methods": filter.PaymentMethods})
+	}
+	if filter.YearOfDrawing != nil {
+		filters = append(filters, map[string]interface{}{"year_of_drawing": filter.YearOfDrawing})
+	}
+	if filter.CommissionRequestCount != nil {
+		filters = append(filters, map[string]interface{}{"commission_request_count": filter.CommissionRequestCount})
+	}
+	if filter.CommissionAcceptCount != nil {
+		filters = append(filters, map[string]interface{}{"commission_accept_count": filter.CommissionAcceptCount})
+	}
+	if filter.CommissionSuccessCount != nil {
+		filters = append(filters, map[string]interface{}{"commission_success_count": filter.CommissionSuccessCount})
+	}
+	if filter.AvgRatings != nil {
+		filters = append(filters, map[string]interface{}{"avg_ratings": filter.AvgRatings})
+	}
+	if filter.LastRequestTime != nil {
+		filters = append(filters, map[string]interface{}{"last_request_time": filter.LastRequestTime})
+	}
+	return filters
 }
 
 type SearchArtistsFilter struct {
 	State                  *[]model.UserState `json:"state,omitempty"`
-	RegTime                *model2.TimeRange   `json:"reg_time,omitempty"`
+	RegTime                *model2.TimeRange  `json:"reg_time,omitempty"`
 	PaymentMethods         *[]string          `json:"payment_methods,omitempty"`
-	YearOfDrawing          *model2.TimeRange   `json:"year_of_drawing,omitempty"`
-	CommissionRequestCount *model2.IntRange    `json:"commission_request_count,omitempty"`
-	CommissionAcceptCount  *model2.IntRange    `json:"commission_accept_count,omitempty"`
-	CommissionSuccessCount *model2.IntRange    `json:"commission_success_count,omitempty"`
-	AvgRatings             *model2.FloatRange  `json:"avg_ratings,omitempty"`
-	LastRequestTime        *model2.TimeRange   `json:"last_request_time,omitempty"`
+	YearOfDrawing          *model2.TimeRange  `json:"year_of_drawing,omitempty"`
+	CommissionRequestCount *model2.IntRange   `json:"commission_request_count,omitempty"`
+	CommissionAcceptCount  *model2.IntRange   `json:"commission_accept_count,omitempty"`
+	CommissionSuccessCount *model2.IntRange   `json:"commission_success_count,omitempty"`
+	AvgRatings             *model2.FloatRange `json:"avg_ratings,omitempty"`
+	LastRequestTime        *model2.TimeRange  `json:"last_request_time,omitempty"`
 }
 
 func getSearchArtistsSorter(sorter model.ArtistSorter) SearchArtistsSorter {

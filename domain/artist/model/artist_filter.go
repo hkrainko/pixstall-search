@@ -13,7 +13,7 @@ type ArtistFilter struct {
 	PaymentMethods *[]string
 
 	// YearOfDrawing
-	YearOfDrawing *model.TimeRange
+	YearOfDrawing *model.IntRange
 
 	// CommissionRequestCount
 	CommissionRequestCount *model.IntRange

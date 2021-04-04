@@ -24,18 +24,18 @@ func NewSearchOpenCommissionsRequest(query string, filter model.OpenCommissionFi
 }
 
 func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) SearchOpenCommissionsFilter {
-	var convPrice model2.FloatRange
+	var convPrice *model2.FloatRange
 	if filter.PriceAmount != nil && filter.PriceCurrency != nil {
 		from := filter.PriceCurrency.GetConvPrice(*filter.PriceAmount.From)
 		to := filter.PriceCurrency.GetConvPrice(*filter.PriceAmount.To)
-		convPrice = model2.FloatRange{
+		convPrice = &model2.FloatRange{
 			From: &from,
 			To:   &to,
 		}
 	}
 	return SearchOpenCommissionsFilter{
 		State:          filter.State,
-		ConvPrice:      &convPrice,
+		ConvPrice:      convPrice,
 		DayNeedFrom:    filter.DayNeedFrom,
 		DayNeedTo:      filter.DayNeedTo,
 		IsR18:          filter.IsR18,
@@ -47,8 +47,8 @@ func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) SearchOpen
 type SearchOpenCommissionsFilter struct {
 	State          *[]model.OpenCommissionState `json:"state,omitempty"`
 	ConvPrice      *model2.FloatRange           `json:"conv_price,omitempty"`
-	DayNeedFrom    *model2.TimeRange            `json:"day_need_from,omitempty"`
-	DayNeedTo      *model2.TimeRange            `json:"day_need_to,omitempty"`
+	DayNeedFrom    *model2.IntRange             `json:"day_need_from,omitempty"`
+	DayNeedTo      *model2.IntRange             `json:"day_need_to,omitempty"`
 	IsR18          *bool                        `json:"is_r18,omitempty"`
 	AllowBePrivate *bool                        `json:"allow_be_private,omitempty"`
 	AllowAnonymous *bool                        `json:"allow_anonymous,omitempty"`

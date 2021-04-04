@@ -46,11 +46,16 @@ func teardown() {
 
 func TestSearchArtists(t *testing.T) {
 	state := []model.UserState{model.UserStateActive}
+	yearOfDrawingForm := 0
+	yearOfDrawingTo := 100
 	filter := model.ArtistFilter{
 		State:                  &state,
 		RegTime:                nil,
 		PaymentMethods:         nil,
-		YearOfDrawing:          nil,
+		YearOfDrawing:          &model2.IntRange{
+			From: &yearOfDrawingForm,
+			To:   &yearOfDrawingTo,
+		},
 		CommissionRequestCount: nil,
 		CommissionAcceptCount:  nil,
 		CommissionSuccessCount: nil,
@@ -82,9 +87,10 @@ func TestSearchArtists(t *testing.T) {
 
 func TestSearchArtworks(t *testing.T) {
 	state := []model3.ArtworkState{model3.ArtworkStateActive}
+	dayUsed := time.Duration(5)
 	filter := model3.ArtworkFilter{
 		State:          &state,
-		DayUsed:        nil,
+		DayUsed:        &dayUsed,
 		IsR18:          nil,
 		Anonymous:      nil,
 		Rating:         nil,
@@ -121,21 +127,23 @@ func TestSearchArtworks(t *testing.T) {
 
 func TestSearchOpenCommissions(t *testing.T) {
 	state := []model4.OpenCommissionState{model4.OpenCommissionStateActive}
+	priceAmountFrom := 10.00
+	PriceAmountTo := 100.00
+	priceCurrency := model4.CurrencyHKD
+	dayNeedFromFrom := 5
+	dayNeedFromTo := 20
 	filter := model4.OpenCommissionFilter{
 		State: &state,
 		PriceAmount: &model2.FloatRange{
-			From: nil,
-			To:   nil,
+			From: &priceAmountFrom,
+			To:   &PriceAmountTo,
 		},
-		PriceCurrency: nil,
-		DayNeedFrom: &model2.TimeRange{
-			From: &time.Time{},
-			To:   &time.Time{},
+		PriceCurrency: &priceCurrency,
+		DayNeedFrom: &model2.IntRange{
+			From: &dayNeedFromFrom,
+			To:   &dayNeedFromTo,
 		},
-		DayNeedTo: &model2.TimeRange{
-			From: &time.Time{},
-			To:   &time.Time{},
-		},
+		DayNeedTo: nil,
 		IsR18:          nil,
 		AllowBePrivate: nil,
 		AllowAnonymous: nil,

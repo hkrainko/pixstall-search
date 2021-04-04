@@ -8,8 +8,8 @@ type OpenCommissionFilter struct {
 	PriceAmount   *model.FloatRange
 	PriceCurrency *Currency
 
-	DayNeedFrom    *model.TimeRange
-	DayNeedTo      *model.TimeRange
+	DayNeedFrom    *model.IntRange
+	DayNeedTo      *model.IntRange
 	IsR18          *bool
 	AllowBePrivate *bool
 	AllowAnonymous *bool
