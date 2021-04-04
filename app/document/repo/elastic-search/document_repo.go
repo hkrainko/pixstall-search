@@ -97,7 +97,23 @@ func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtwork(ctx context.Context, updater model2.ArtworkUpdater) (*string, error) {
-	panic("implement me")
+	var result []model4.ResponseResult
+	r, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewUpdateArtworkRequest(updater)).
+		SetResult(&result).
+		Patch(e.host.ApiPath + "/artworks-search-engine/documents")
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
+	}
+	if len(result[0].Errors) > 0 {
+		log.Printf("%v", result[0].Errors)
+		return nil, error2.UnknownError
+	}
+	return &result[0].ID, nil
 }
 
 func (e elasticSearchDocumentRepo) AddOpenCommission(ctx context.Context, creator model3.OpenCommissionCreator) (*string, error) {
@@ -113,12 +129,13 @@ func checkIfError(resp *resty.Response, err error) error {
 		log.Println(err)
 		return error2.UnknownError
 	}
+	log.Println(resp)
 	if resp.StatusCode() != 200 {
 		switch resp.StatusCode() {
 		case http.StatusNotFound:
 			return error2.NotFoundError
 		default:
-			break
+			return error2.UnknownError
 		}
 	}
 	return nil

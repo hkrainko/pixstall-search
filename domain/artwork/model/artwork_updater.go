@@ -8,7 +8,7 @@ type ArtworkUpdater struct {
 	ArtistProfilePath    *string `json:"artistProfilePath"`
 
 	Title       *string `json:"title"`
-	TextContext *string `json:"textContext"`
+	TextContent *string `json:"textContent"`
 	Views       *int     `json:"views"`
 	FavorCount  *int    `json:"favorCount"`
 

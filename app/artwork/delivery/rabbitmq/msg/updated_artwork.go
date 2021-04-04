@@ -13,7 +13,7 @@ type UpdatedArtwork struct {
 	RequesterProfilePath *string `json:"requesterProfilePath"`
 
 	Title       *string `json:"title"`
-	TextContext *string `json:"textContext"`
+	TextContent *string `json:"textContent"`
 	Views       *int    `json:"views"`
 	FavorCount  *int    `json:"favorCount"`
 
@@ -27,7 +27,7 @@ func (u UpdatedArtwork) ToDomainArtworkUpdater() model.ArtworkUpdater {
 		ArtistName:        u.ArtistName,
 		ArtistProfilePath: u.ArtistProfilePath,
 		Title:             u.Title,
-		TextContext:       u.TextContext,
+		TextContent:       u.TextContent,
 		Views:             u.Views,
 		FavorCount:        u.FavorCount,
 		LastUpdateTime:    u.LastUpdateTime,

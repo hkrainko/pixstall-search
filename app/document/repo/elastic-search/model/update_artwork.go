@@ -11,7 +11,7 @@ type UpdateArtworkRequest struct {
 	ArtistProfilePath *string `json:"artist_profile_path,omitempty"`
 
 	Title       *string `json:"title,omitempty"`
-	TextContext *string `json:"text_context,omitempty"`
+	TextContent *string `json:"text_content,omitempty"`
 	Views       *int    `json:"views,omitempty"`
 	FavorCount  *int    `json:"favor_count,omitempty"`
 
@@ -25,7 +25,7 @@ func NewUpdateArtworkRequest(u model.ArtworkUpdater) UpdateArtworkRequest {
 		ArtistName:        u.ArtistName,
 		ArtistProfilePath: u.ArtistProfilePath,
 		Title:             u.Title,
-		TextContext:       u.TextContext,
+		TextContent:       u.TextContent,
 		Views:             u.Views,
 		FavorCount:        u.FavorCount,
 		LastUpdateTime:    u.LastUpdateTime,

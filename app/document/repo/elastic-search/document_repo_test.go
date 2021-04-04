@@ -22,7 +22,7 @@ const key = "search-21ovx6yqaffz92sxw8qpu23p"
 const token = "private-jxcq12x5tuko6rkbh28gkbdk"
 
 func TestMain(m *testing.M) {
-	faker = gofakeit.New(10)
+	faker = gofakeit.New(0)
 	setup()
 	code := m.Run()
 	teardown()
@@ -30,7 +30,7 @@ func TestMain(m *testing.M) {
 }
 
 func setup() {
-	fmt.Println("Before all tests")
+	fmt.Println("Before eacg tests")
 	ctx = context.Background()
 	repo = NewElasticSearchDocumentRepo(ElasticSearchHost{
 		ApiPath: apiPath,
@@ -114,13 +114,41 @@ func TestAddArtwork(t *testing.T) {
 		IsR18:             faker.Bool(),
 		Anonymous:         faker.Bool(),
 		Path:              faker.ImageURL(1000, 1000),
-		Rating:            faker.RandomInt([]int{1, 2}),
+		Rating:            faker.RandomInt([]int{1, 2, 3, 4, 5}),
 		CreateTime:        faker.Date(),
 		StartTime:         faker.Date(),
 		CompletedTime:     faker.Date(),
 		State:             model2.ArtworkStateActive,
 	}
 	id, err := repo.AddArtwork(ctx, creator)
+	assert.NoError(t, err)
+	assert.NotNil(t, id)
+	if id != nil {
+		assert.Equal(t, "artworkID", *id)
+	}
+}
+
+func TestUpdateArtwork(t *testing.T) {
+	artistName := faker.Name()
+	artistProfilePath := faker.ImageURL(100, 100)
+	title := faker.Sentence(10)
+	textContent := faker.LoremIpsumParagraph(3, 5, 10, "\n")
+	views := faker.Number(100, 100000)
+	favorCount := faker.Number(100, 100000)
+	lastUpdateTime := faker.Date()
+	state := model2.ArtworkStateDeleted
+	updater := model2.ArtworkUpdater{
+		ID:                "artworkID",
+		ArtistName:        &artistName,
+		ArtistProfilePath: &artistProfilePath,
+		Title:             &title,
+		TextContent:       &textContent,
+		Views:             &views,
+		FavorCount:        &favorCount,
+		LastUpdateTime:    &lastUpdateTime,
+		State:             &state,
+	}
+	id, err := repo.UpdateArtwork(ctx, updater)
 	assert.NoError(t, err)
 	assert.NotNil(t, id)
 	if id != nil {
