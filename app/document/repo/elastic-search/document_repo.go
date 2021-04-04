@@ -36,7 +36,7 @@ func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
 }
 
 func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.ArtistCreator) (*string, error) {
-	var resp []model4.AddArtistResponse
+	var resp []model4.ResponseResult
 	r, err := e.client.
 		R().
 		EnableTrace().
@@ -76,7 +76,7 @@ func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater mod
 }
 
 func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model2.ArtworkCreator) (*string, error) {
-	var resp []model4.AddArtworkResponse
+	var resp []model4.ResponseResult
 	r, err := e.client.
 		R().
 		EnableTrace().
@@ -117,11 +117,44 @@ func (e elasticSearchDocumentRepo) UpdateArtwork(ctx context.Context, updater mo
 }
 
 func (e elasticSearchDocumentRepo) AddOpenCommission(ctx context.Context, creator model3.OpenCommissionCreator) (*string, error) {
-	panic("implement me")
+	var resp []model4.ResponseResult
+	r, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewAddOpenCommissionRequest(creator)).
+		SetResult(&resp).
+		Post(e.host.ApiPath + "/open-commissions-search-engine/documents")
+	log.Println(r)
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
+	}
+	if len(resp[0].Errors) > 0 {
+		log.Printf("%v", resp[0].Errors)
+		return nil, error2.UnknownError
+	}
+	return &resp[0].ID, nil
 }
 
 func (e elasticSearchDocumentRepo) UpdateOpenCommission(ctx context.Context, updater model3.OpenCommissionUpdater) (*string, error) {
-	panic("implement me")
+	var result []model4.ResponseResult
+	r, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewUpdateOpenCommissionRequest(updater)).
+		SetResult(&result).
+		Patch(e.host.ApiPath + "/open-commissions-search-engine/documents")
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
+	}
+	if len(result[0].Errors) > 0 {
+		log.Printf("%v", result[0].Errors)
+		return nil, error2.UnknownError
+	}
+	return &result[0].ID, nil
 }
 
 func checkIfError(resp *resty.Response, err error) error {

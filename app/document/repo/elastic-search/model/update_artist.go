@@ -55,8 +55,3 @@ func NewUpdateArtistRequest(updater model.ArtistUpdater) UpdateArtistRequest {
 		LastRequestTime:        updater.CommissionDetails.LastRequestTime,
 	}
 }
-
-type UpdateArtistResponse struct {
-	ID     string   `json:"id"`
-	Errors []string `json:"errors"`
-}

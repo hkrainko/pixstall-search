@@ -52,8 +52,3 @@ func NewAddArtistRequest(creator model.ArtistCreator) AddArtistRequest {
 		PaymentMethods: creator.PaymentMethods,
 	}
 }
-
-type AddArtistResponse struct {
-	ID     string   `json:"id"`
-	Errors []string `json:"errors"`
-}

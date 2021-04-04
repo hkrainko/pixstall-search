@@ -55,8 +55,3 @@ func NewAddArtworkRequest(creator model.ArtworkCreator) AddArtworkRequest {
 		State:             creator.State,
 	}
 }
-
-type AddArtworkResponse struct {
-	ID     string   `json:"id"`
-	Errors []string `json:"errors"`
-}

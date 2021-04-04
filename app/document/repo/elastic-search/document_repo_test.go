@@ -9,6 +9,7 @@ import (
 	"pixstall-search/domain/artist/model"
 	model2 "pixstall-search/domain/artwork/model"
 	"pixstall-search/domain/document"
+	model3 "pixstall-search/domain/open-commission/model"
 	"testing"
 	"time"
 )
@@ -153,5 +154,79 @@ func TestUpdateArtwork(t *testing.T) {
 	assert.NotNil(t, id)
 	if id != nil {
 		assert.Equal(t, "artworkID", *id)
+	}
+}
+
+func TestAddOpenCommission(t *testing.T) {
+
+	creator := model3.OpenCommissionCreator{
+		ID:      "openCommissionID",
+		ArtistID: faker.UUID(),
+		Title:    faker.Sentence(10),
+		Desc:     faker.Paragraph(2, 3, 4, "\n"),
+		Price: model3.Price{
+			Amount:   faker.Price(100, 1000),
+			Currency: model3.CurrencyHKD,
+		},
+		DayNeed: model3.DayNeed{
+			From: faker.Number(10, 20),
+			To:   faker.Number(20, 30),
+		},
+		IsR18:            faker.Bool(),
+		AllowBePrivate:   faker.Bool(),
+		AllowAnonymous:   faker.Bool(),
+		SampleImagePaths: []string{
+			faker.ImageURL(100, 100),
+			faker.ImageURL(100, 100),
+			faker.ImageURL(100, 100),
+		},
+		State:            model3.OpenCommissionStateActive,
+		CreateTime:       faker.Date(),
+		LastUpdatedTime:  faker.Date(),
+	}
+	id, err := repo.AddOpenCommission(ctx, creator)
+	assert.NoError(t, err)
+	assert.NotNil(t, id)
+	if id != nil {
+		assert.Equal(t, "openCommissionID", *id)
+	}
+}
+
+func TestUpdateOpenCommission(t *testing.T) {
+	title := faker.Sentence(20)
+	desc := faker.Paragraph(2, 3, 10, "\n")
+	isR18 := faker.Bool()
+	allowBePrivate := faker.Bool()
+	allowAnonymous := faker.Bool()
+	state := model3.OpenCommissionStateRemoved
+
+	updater := model3.OpenCommissionUpdater{
+		ID:               "openCommissionID",
+		Title:            &title,
+		Desc:             &desc,
+		Price:            &model3.Price{
+			Amount:   faker.Price(100, 300),
+			Currency: model3.CurrencyTWD,
+		},
+		DayNeed:          &model3.DayNeed{
+			From: faker.Number(10, 20),
+			To:   faker.Number(20, 110),
+		},
+		SampleImagePaths: &[]string{
+			faker.ImageURL(100, 100),
+			faker.ImageURL(100, 100),
+			faker.ImageURL(100, 100),
+		},
+		IsR18:            &isR18,
+		AllowBePrivate:   &allowBePrivate,
+		AllowAnonymous:   &allowAnonymous,
+		State:            &state,
+		LastUpdatedTime:  faker.Date(),
+	}
+	id, err := repo.UpdateOpenCommission(ctx, updater)
+	assert.NoError(t, err)
+	assert.NotNil(t, id)
+	if id != nil {
+		assert.Equal(t, "openCommissionID", *id)
 	}
 }

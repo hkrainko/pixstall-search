@@ -25,7 +25,7 @@ type AddOpenCommissionRequest struct {
 	AllowAnonymous   bool                      `json:"allow_anonymous"`
 	State            model.OpenCommissionState `json:"state"`
 	CreateTime       time.Time                 `json:"create_time"`
-	LastUpdatedTime  time.Time                 `json:"lastUpdated_time"`
+	LastUpdatedTime  time.Time                 `json:"last_updated_time"`
 }
 
 func NewAddOpenCommissionRequest(creator model.OpenCommissionCreator) AddOpenCommissionRequest {
@@ -46,9 +46,4 @@ func NewAddOpenCommissionRequest(creator model.OpenCommissionCreator) AddOpenCom
 		CreateTime:       creator.CreateTime,
 		LastUpdatedTime:  creator.LastUpdatedTime,
 	}
-}
-
-type AddOpenCommissionResponse struct {
-	ID     string  `json:"id"`
-	Errors []string `json:"errors"`
 }

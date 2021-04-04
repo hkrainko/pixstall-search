@@ -51,8 +51,3 @@ func NewUpdateOpenCommissionRequest(updater model.OpenCommissionUpdater) UpdateO
 		LastUpdatedTime:  updater.LastUpdatedTime,
 	}
 }
-
-type UpdateOpenCommissionResponse struct {
-	ID     string   `json:"id"`
-	Errors []string `json:"errors"`
-}

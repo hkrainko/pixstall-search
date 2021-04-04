@@ -32,8 +32,3 @@ func NewUpdateArtworkRequest(u model.ArtworkUpdater) UpdateArtworkRequest {
 		State:             u.State,
 	}
 }
-
-type UpdateArtworkResponse struct {
-	ID     string   `json:"id"`
-	Errors []string `json:"errors"`
-}
