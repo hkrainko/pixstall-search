@@ -44,7 +44,7 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 		SetHeader("Authorization", e.host.BearToken()).
 		SetBody(model4.NewAddArtistRequest(creator)).
 		SetResult(&resp).
-		Post(e.host.ApiPath + "/artist-search-engine/documents")
+		Post(e.host.ApiPath + "/artists-search-engine/documents")
 	if err := checkIfError(r, err); err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater mod
 		SetHeader("Authorization", e.host.BearToken()).
 		SetBody(model4.NewUpdateArtistRequest(updater)).
 		SetResult(&result).
-		Patch(e.host.ApiPath + "/artist-search-engine/documents")
+		Patch(e.host.ApiPath + "/artists-search-engine/documents")
 	if err := checkIfError(r, err); err != nil {
 		return nil, err
 	}
