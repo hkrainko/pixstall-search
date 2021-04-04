@@ -69,10 +69,10 @@ func TestSearchArtists(t *testing.T) {
 		AvgRatings:             nil,
 		LastRequestTime:        nil,
 	}
-	artists, err := repo.SearchArtists(ctx, "artist", filter, sorter)
+	getArtistsResult, err := repo.SearchArtists(ctx, "artist", filter, sorter)
 	assert.NoError(t, err)
-	assert.NotNil(t, artists)
-	if artists != nil {
-		assert.Greater(t, len(*artists), 0)
+	assert.NotNil(t, getArtistsResult)
+	if getArtistsResult != nil {
+		assert.Greater(t, len(getArtistsResult.Artists), 0)
 	}
 }

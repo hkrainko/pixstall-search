@@ -14,7 +14,7 @@ type Artist struct {
 type User struct {
 	UserID          string    `json:"userId"`
 	UserName        string    `json:"userName"`
-	ProfilePath     string    `json:"profilePath"`
+	ProfilePath     *string    `json:"profilePath"`
 	State           UserState `json:"state"`
 	RegTime         time.Time `json:"regTime"`
 	LastUpdatedTime time.Time `json:"lastUpdatedTime"`

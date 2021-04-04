@@ -1,4 +1,4 @@
-package model
+package req
 
 type GetSuggestionsRequest struct {
 	Query string `json:"query"`
@@ -9,7 +9,7 @@ type GetSuggestionsResponse struct {
 
 }
 
-func NewGetSuggestionsRequest(query string)  GetSuggestionsRequest {
+func NewGetSuggestionsRequest(query string) GetSuggestionsRequest {
 	return GetSuggestionsRequest{
 		Query: query,
 	}

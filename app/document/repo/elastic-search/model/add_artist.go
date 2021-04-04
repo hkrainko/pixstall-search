@@ -29,7 +29,7 @@ type AddArtistRequest struct {
 type User struct {
 	UserID          string          `json:"user_id"`
 	UserName        string          `json:"user_name"`
-	ProfilePath     string          `json:"profile_path"`
+	ProfilePath     *string          `json:"profile_path"`
 	State           model.UserState `json:"state"`
 	RegTime         time.Time       `json:"reg_time"`
 	LastUpdatedTime time.Time       `json:"last_updated_time"`

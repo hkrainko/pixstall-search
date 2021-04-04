@@ -1,4 +1,4 @@
-package model
+package req
 
 type SearchArtworksRequest struct {
 

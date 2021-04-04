@@ -1,4 +1,4 @@
-package model
+package req
 
 import (
 	"pixstall-search/domain/artist/model"
@@ -10,9 +10,6 @@ type SearchArtistsRequest struct {
 	Page    model2.PageFilter    `json:"page"`
 	Filters *SearchArtistsFilter `json:"filters,omitempty"`
 	Sort    *SearchArtistsSorter `json:"sort,omitempty"`
-}
-
-type SearchArtistsResponse struct {
 }
 
 func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter model.ArtistSorter) SearchArtistsRequest {
