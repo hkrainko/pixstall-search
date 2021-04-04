@@ -3,9 +3,11 @@ package elastic_search
 import (
 	"context"
 	"fmt"
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"pixstall-search/domain/artist/model"
+	model2 "pixstall-search/domain/artwork/model"
 	"pixstall-search/domain/document"
 	"testing"
 	"time"
@@ -13,12 +15,14 @@ import (
 
 var repo document.Repo
 var ctx context.Context
+var faker *gofakeit.Faker
 
 const apiPath = "http://localhost:3002/api/as/v1/engines"
 const key = "search-21ovx6yqaffz92sxw8qpu23p"
 const token = "private-jxcq12x5tuko6rkbh28gkbdk"
 
 func TestMain(m *testing.M) {
+	faker = gofakeit.New(10)
 	setup()
 	code := m.Run()
 	teardown()
@@ -94,5 +98,32 @@ func TestUpdateArtist(t *testing.T) {
 	assert.NotNil(t, id)
 	if id != nil {
 		assert.Equal(t, "artistID", *id)
+	}
+}
+
+func TestAddArtwork(t *testing.T) {
+	artistProfilePath := faker.ImageURL(100, 100)
+	creator := model2.ArtworkCreator{
+		ID:                "artworkID",
+		CommissionID:      faker.UUID(),
+		OpenCommissionID:  faker.UUID(),
+		ArtistID:          faker.UUID(),
+		ArtistName:        faker.Name(),
+		ArtistProfilePath: &artistProfilePath,
+		DayUsed:           time.Duration(faker.Day()),
+		IsR18:             faker.Bool(),
+		Anonymous:         faker.Bool(),
+		Path:              faker.ImageURL(1000, 1000),
+		Rating:            faker.RandomInt([]int{1, 2}),
+		CreateTime:        faker.Date(),
+		StartTime:         faker.Date(),
+		CompletedTime:     faker.Date(),
+		State:             model2.ArtworkStateActive,
+	}
+	id, err := repo.AddArtwork(ctx, creator)
+	assert.NoError(t, err)
+	assert.NotNil(t, id)
+	if id != nil {
+		assert.Equal(t, "artworkID", *id)
 	}
 }

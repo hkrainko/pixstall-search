@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type OpenCommissionCreator struct {
 	ID               string
 	ArtistID         string
@@ -11,4 +13,7 @@ type OpenCommissionCreator struct {
 	AllowBePrivate   bool
 	AllowAnonymous   bool
 	SampleImagePaths []string
+	State            OpenCommissionState
+	CreateTime       time.Time
+	LastUpdatedTime  time.Time
 }

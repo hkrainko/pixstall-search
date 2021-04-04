@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-resty/resty/v2"
 	"log"
+	"net/http"
 	model4 "pixstall-search/app/document/repo/elastic-search/model"
 	"pixstall-search/domain/artist/model"
 	model2 "pixstall-search/domain/artwork/model"
@@ -36,7 +37,7 @@ func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
 
 func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.ArtistCreator) (*string, error) {
 	var resp []model4.AddArtistResponse
-	_, err := e.client.
+	r, err := e.client.
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
@@ -44,9 +45,8 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 		SetBody(model4.NewAddArtistRequest(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artist-search-engine/documents")
-	if err != nil {
-		log.Println(err)
-		return nil, error2.UnknownError
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
 	}
 	if len(resp[0].Errors) > 0 {
 		log.Printf("%v", resp[0].Errors)
@@ -56,28 +56,44 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater model.ArtistUpdater) (*string, error) {
-	var resp []model4.UpdateArtistResponse
-	_, err := e.client.
+	var result []model4.ResponseResult
+	r, err := e.client.
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
 		SetHeader("Authorization", e.host.BearToken()).
 		SetBody(model4.NewUpdateArtistRequest(updater)).
-		SetResult(&resp).
+		SetResult(&result).
 		Patch(e.host.ApiPath + "/artist-search-engine/documents")
-	if err != nil {
-		log.Println(err)
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
+	}
+	if len(result[0].Errors) > 0 {
+		log.Printf("%v", result[0].Errors)
 		return nil, error2.UnknownError
+	}
+	return &result[0].ID, nil
+}
+
+func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model2.ArtworkCreator) (*string, error) {
+	var resp []model4.AddArtworkResponse
+	r, err := e.client.
+		R().
+		EnableTrace().
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Authorization", e.host.BearToken()).
+		SetBody(model4.NewAddArtworkRequest(creator)).
+		SetResult(&resp).
+		Post(e.host.ApiPath + "/artworks-search-engine/documents")
+	log.Println(r)
+	if err := checkIfError(r, err); err != nil {
+		return nil, err
 	}
 	if len(resp[0].Errors) > 0 {
 		log.Printf("%v", resp[0].Errors)
 		return nil, error2.UnknownError
 	}
 	return &resp[0].ID, nil
-}
-
-func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model2.ArtworkCreator) (*string, error) {
-	panic("implement me")
 }
 
 func (e elasticSearchDocumentRepo) UpdateArtwork(ctx context.Context, updater model2.ArtworkUpdater) (*string, error) {
@@ -90,4 +106,20 @@ func (e elasticSearchDocumentRepo) AddOpenCommission(ctx context.Context, creato
 
 func (e elasticSearchDocumentRepo) UpdateOpenCommission(ctx context.Context, updater model3.OpenCommissionUpdater) (*string, error) {
 	panic("implement me")
+}
+
+func checkIfError(resp *resty.Response, err error) error {
+	if err != nil {
+		log.Println(err)
+		return error2.UnknownError
+	}
+	if resp.StatusCode() != 200 {
+		switch resp.StatusCode() {
+		case http.StatusNotFound:
+			return error2.NotFoundError
+		default:
+			break
+		}
+	}
+	return nil
 }
