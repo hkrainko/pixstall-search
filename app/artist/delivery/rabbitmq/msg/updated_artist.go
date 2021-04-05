@@ -1,6 +1,8 @@
 package msg
 
-import "pixstall-search/domain/artist/model"
+import (
+	"pixstall-search/domain/artist/model"
+)
 
 type UpdatedArtist struct {
 	ArtistID string
@@ -10,8 +12,7 @@ type UpdatedArtist struct {
 	Email       *string
 	Birthday    *string
 	Gender      *string
-	State       *string
-	RegTime     *string
+	State       *model.UserState
 
 	ArtistIntro    *model.ArtistIntro
 	ArtistBoard    *model.ArtistBoard
@@ -26,7 +27,6 @@ func (u UpdatedArtist) ToDomainArtistUpdater() model.ArtistUpdater {
 		UserName:          u.UserName,
 		ProfilePath:       u.ProfilePath,
 		State:             u.State,
-		RegTime:           u.RegTime,
 		ArtistIntro:       u.ArtistIntro,
 		ArtistBoard:       u.ArtistBoard,
 		PaymentMethods:    u.PaymentMethods,

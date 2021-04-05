@@ -15,7 +15,7 @@ type CreatedArtist struct {
 type User struct {
 	UserID          string          `json:"userId"`
 	UserName        string          `json:"userName"`
-	ProfilePath     string          `json:"profilePath"`
+	ProfilePath     *string          `json:"profilePath"`
 	Email           string          `json:"email"`
 	Birthday        string          `json:"birthday"`
 	Gender          string          `json:"gender"`

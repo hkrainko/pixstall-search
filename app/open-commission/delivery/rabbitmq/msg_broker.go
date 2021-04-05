@@ -31,7 +31,7 @@ func NewRabbitMQOpenCommissionMessageBroker(useCase open_commission.UseCase, con
 	}
 }
 
-func (a OpenCommissionMessageBroker) StartArtistQueue() {
+func (a OpenCommissionMessageBroker) StartOpenCommQueue() {
 	//TODO
 	q, err := a.ch.QueueDeclare(
 		"open-comm-event-to-search", // name
@@ -47,12 +47,12 @@ func (a OpenCommissionMessageBroker) StartArtistQueue() {
 	err = a.ch.QueueBind(
 		q.Name,
 		"open-comm.event.#",
-		"artist",
+		"open-comm",
 		false,
 		nil,
 	)
 	if err != nil {
-		log.Fatalf("Failed to bind queue %v", err)
+		log.Fatalf("Failed to bind open-commission queue %v", err)
 	}
 
 	msgs, err := a.ch.Consume(
@@ -116,12 +116,12 @@ func (a OpenCommissionMessageBroker) StartArtistQueue() {
 	<-forever
 }
 
-func (a OpenCommissionMessageBroker) StopArtistQueue() {
+func (a OpenCommissionMessageBroker) StopOpenCommQueue() {
 	err := a.ch.Close()
 	if err != nil {
-		log.Printf("StopArtistQueue err %v", err)
+		log.Printf("StopOpenCommQueue err %v", err)
 	}
-	log.Printf("StopArtistQueue success")
+	log.Printf("StopOpenCommQueue success")
 }
 
 func (a OpenCommissionMessageBroker) openCommissionCreated(ctx context.Context, body []byte) error {

@@ -31,7 +31,7 @@ func NewRabbitMQArtworkMessageBroker(useCase artwork.UseCase, conn *amqp.Connect
 	}
 }
 
-func (a ArtworkMessageBroker) StartArtistQueue() {
+func (a ArtworkMessageBroker) StartArtworkQueue() {
 	//TODO
 	q, err := a.ch.QueueDeclare(
 		"artwork-event-to-search", // name
@@ -47,12 +47,12 @@ func (a ArtworkMessageBroker) StartArtistQueue() {
 	err = a.ch.QueueBind(
 		q.Name,
 		"artwork.event.#",
-		"artist",
+		"artwork",
 		false,
 		nil,
 	)
 	if err != nil {
-		log.Fatalf("Failed to bind queue %v", err)
+		log.Fatalf("Failed to bind artwork queue %v", err)
 	}
 
 	msgs, err := a.ch.Consume(

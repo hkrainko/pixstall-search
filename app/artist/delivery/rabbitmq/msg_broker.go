@@ -52,7 +52,7 @@ func (a ArtistMessageBroker) StartArtistQueue() {
 		nil,
 	)
 	if err != nil {
-		log.Fatalf("Failed to bind queue %v", err)
+		log.Fatalf("Failed to bind artist queue %v", err)
 	}
 
 	msgs, err := a.ch.Consume(
@@ -120,9 +120,9 @@ func (a ArtistMessageBroker) StartArtistQueue() {
 func (a ArtistMessageBroker) StopArtistQueue() {
 	err := a.ch.Close()
 	if err != nil {
-		log.Printf("StopArtistQueue err %v", err)
+		log.Printf("StopOpenCommQueue err %v", err)
 	}
-	log.Printf("StopArtistQueue success")
+	log.Printf("StopOpenCommQueue success")
 }
 
 func (a ArtistMessageBroker) artistCreated(ctx context.Context, body []byte) error {
