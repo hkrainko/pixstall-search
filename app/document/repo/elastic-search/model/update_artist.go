@@ -8,10 +8,9 @@ import (
 type UpdateArtistRequest struct {
 	ID string `json:"id"`
 
-	UserName        *string          `json:"user_name,omitempty"`
-	ProfilePath     *string          `json:"profile_path,omitempty"`
-	State           *model.UserState `json:"state,omitempty"`
-	LastUpdatedTime *time.Time       `json:"last_updated_time,omitempty"`
+	UserName    *string          `json:"user_name,omitempty"`
+	ProfilePath *string          `json:"profile_path,omitempty"`
+	State       *model.UserState `json:"state,omitempty"`
 
 	PaymentMethods *[]string `json:"payment_methods,omitempty"`
 
@@ -28,30 +27,24 @@ type UpdateArtistRequest struct {
 	CommissionSuccessCount *int       `json:"commission_success_count,omitempty"`
 	AvgRatings             *float64   `json:"avg_ratings,omitempty"`
 	LastRequestTime        *time.Time `json:"last_request_time,omitempty"`
+	LastUpdatedTime        *time.Time `json:"last_updated_time,omitempty"`
 }
 
 func NewUpdateArtistRequest(updater model.ArtistUpdater) UpdateArtistRequest {
-	var yearOfDrawing *int
-	var artTypes *[]string
-	if updater.ArtistIntro != nil {
-		yearOfDrawing = &updater.ArtistIntro.YearOfDrawing
-		artTypes = &updater.ArtistIntro.ArtTypes
-	}
-
 	return UpdateArtistRequest{
 		ID:                     updater.ArtistID,
 		UserName:               updater.UserName,
 		ProfilePath:            updater.ProfilePath,
 		State:                  updater.State,
-		LastUpdatedTime:        updater.LastUpdateTime,
 		PaymentMethods:         updater.PaymentMethods,
-		YearOfDrawing:          yearOfDrawing,
-		ArtTypes:               artTypes,
-		Desc:                   &updater.ArtistBoard.Desc,
-		CommissionRequestCount: &updater.CommissionDetails.CommissionRequestCount,
-		CommissionAcceptCount:  &updater.CommissionDetails.CommissionAcceptCount,
-		CommissionSuccessCount: &updater.CommissionDetails.CommissionSuccessCount,
-		AvgRatings:             updater.CommissionDetails.AvgRatings,
-		LastRequestTime:        updater.CommissionDetails.LastRequestTime,
+		YearOfDrawing:          updater.YearOfDrawing,
+		ArtTypes:               updater.ArtTypes,
+		Desc:                   updater.Desc,
+		CommissionRequestCount: updater.CommissionRequestCount,
+		CommissionAcceptCount:  updater.CommissionAcceptCount,
+		CommissionSuccessCount: updater.CommissionSuccessCount,
+		AvgRatings:             updater.AvgRatings,
+		LastRequestTime:        updater.LastRequestTime,
+		LastUpdatedTime:        updater.LastUpdatedTime,
 	}
 }

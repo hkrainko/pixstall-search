@@ -120,9 +120,9 @@ func (a ArtistMessageBroker) StartArtistQueue() {
 func (a ArtistMessageBroker) StopArtistQueue() {
 	err := a.ch.Close()
 	if err != nil {
-		log.Printf("StopOpenCommQueue err %v", err)
+		log.Printf("StopArtistQueue err %v", err)
 	}
-	log.Printf("StopOpenCommQueue success")
+	log.Printf("StopArtistQueue success")
 }
 
 func (a ArtistMessageBroker) artistCreated(ctx context.Context, body []byte) error {

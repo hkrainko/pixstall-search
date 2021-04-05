@@ -15,8 +15,8 @@ type UpdateArtworkRequest struct {
 	Views       *int    `json:"views,omitempty"`
 	FavorCount  *int    `json:"favor_count,omitempty"`
 
-	LastUpdateTime *time.Time          `json:"last_update_time,omitempty"`
-	State          *model.ArtworkState `json:"state,omitempty"`
+	LastUpdatedTime *time.Time          `json:"last_updated_time,omitempty"`
+	State           *model.ArtworkState `json:"state,omitempty"`
 }
 
 func NewUpdateArtworkRequest(u model.ArtworkUpdater) UpdateArtworkRequest {
@@ -28,7 +28,7 @@ func NewUpdateArtworkRequest(u model.ArtworkUpdater) UpdateArtworkRequest {
 		TextContent:       u.TextContent,
 		Views:             u.Views,
 		FavorCount:        u.FavorCount,
-		LastUpdateTime:    u.LastUpdateTime,
+		LastUpdatedTime:   u.LastUpdatedTime,
 		State:             u.State,
 	}
 }

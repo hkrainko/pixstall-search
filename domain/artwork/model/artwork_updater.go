@@ -12,6 +12,6 @@ type ArtworkUpdater struct {
 	Views       *int     `json:"views"`
 	FavorCount  *int    `json:"favorCount"`
 
-	LastUpdateTime *time.Time `json:"lastUpdateTime" bson:"lastUpdateTime"`
-	State          *ArtworkState
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime" bson:"lastUpdatedTime"`
+	State           *ArtworkState
 }

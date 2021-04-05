@@ -17,8 +17,8 @@ type UpdatedArtwork struct {
 	Views       *int    `json:"views"`
 	FavorCount  *int    `json:"favorCount"`
 
-	LastUpdateTime *time.Time          `json:"lastUpdateTime"`
-	State          *model.ArtworkState `json:"state"`
+	LastUpdatedTime *time.Time          `json:"lastUpdatedTime"`
+	State           *model.ArtworkState `json:"state"`
 }
 
 func (u UpdatedArtwork) ToDomainArtworkUpdater() model.ArtworkUpdater {
@@ -30,7 +30,7 @@ func (u UpdatedArtwork) ToDomainArtworkUpdater() model.ArtworkUpdater {
 		TextContent:       u.TextContent,
 		Views:             u.Views,
 		FavorCount:        u.FavorCount,
-		LastUpdateTime:    u.LastUpdateTime,
+		LastUpdatedTime:   u.LastUpdatedTime,
 		State:             u.State,
 	}
 }

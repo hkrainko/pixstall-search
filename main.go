@@ -15,11 +15,6 @@ func main() {
 	}
 	defer rbMQConn.Close()
 
-	//_, err = rbMQConn.Channel()
-	//if err != nil {
-	//	log.Fatalf("Failed to create channel %v", err)
-	//}
-
 	// Elasticsearch
 	host := elastic_search.ElasticSearchHost{
 		ApiPath:    "http://localhost:3002/api/as/v1/engines",
@@ -31,13 +26,13 @@ func main() {
 	go artistMsgBroker.StartArtistQueue()
 	defer artistMsgBroker.StopArtistQueue()
 
-	//artworkMsgBroker := InitArtworkMessageBroker(rbMQConn, &host)
-	//go artworkMsgBroker.StartArtworkQueue()
-	//defer artworkMsgBroker.StopArtworkQueue()
+	artworkMsgBroker := InitArtworkMessageBroker(rbMQConn, &host)
+	go artworkMsgBroker.StartArtworkQueue()
+	defer artworkMsgBroker.StopArtworkQueue()
 
-	//openCommMsgBroker := InitOpenCommissionMessageBroker(rbMQConn, &host)
-	//go openCommMsgBroker.StartOpenCommQueue()
-	//defer openCommMsgBroker.StopOpenCommQueue()
+	openCommMsgBroker := InitOpenCommissionMessageBroker(rbMQConn, &host)
+	go openCommMsgBroker.StartOpenCommQueue()
+	defer openCommMsgBroker.StopOpenCommQueue()
 
 	r := gin.Default()
 	apiGroup := r.Group("/api")
@@ -47,4 +42,6 @@ func main() {
 		searchGroup.GET("", ctrl.Search)
 	}
 
+	err = r.Run(":9006")
+	print(err)
 }

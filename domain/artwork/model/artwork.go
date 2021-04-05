@@ -17,16 +17,16 @@ type Artwork struct {
 	Path   string `json:"path" bson:"path"`
 	Rating int    `json:"rating" bson:"rating"`
 
-	Title       string          `json:"title"`
-	TextContent string          `json:"textContent"`
-	Views       int             `json:"views"`
-	FavorCount  int             `json:"favorCount"`
+	Title       string `json:"title"`
+	TextContent string `json:"textContent"`
+	Views       int    `json:"views"`
+	FavorCount  int    `json:"favorCount"`
 
-	CreateTime     time.Time    `json:"createTime" bson:"createTime"`
-	StartTime      time.Time    `json:"startTime" bson:"startTime"`
-	CompletedTime  time.Time    `json:"completedTime" bson:"completedTime"`
-	LastUpdateTime time.Time    `json:"lastUpdateTime" bson:"lastUpdateTime"`
-	State          ArtworkState `json:"state" bson:"state"`
+	CreateTime      time.Time    `json:"createTime" bson:"createTime"`
+	StartTime       time.Time    `json:"startTime" bson:"startTime"`
+	CompletedTime   time.Time    `json:"completedTime" bson:"completedTime"`
+	LastUpdatedTime time.Time    `json:"lastUpdatedTime" bson:"lastUpdatedTime"`
+	State           ArtworkState `json:"state" bson:"state"`
 }
 
 type ArtworkState string

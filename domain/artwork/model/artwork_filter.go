@@ -17,10 +17,10 @@ type ArtworkFilter struct {
 	Views      *model.IntRange
 	FavorCount *model.IntRange
 
-	CreateTime     *model.TimeRange
-	StartTime      *model.TimeRange
-	CompletedTime  *model.TimeRange
-	LastUpdateTime *model.TimeRange
+	CreateTime      *model.TimeRange
+	StartTime       *model.TimeRange
+	CompletedTime   *model.TimeRange
+	LastUpdatedTime *model.TimeRange
 
 	PageFilter model.PageFilter
 }

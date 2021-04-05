@@ -71,7 +71,7 @@ type SearchArtworkResponseResult struct {
 	CompletedTime struct {
 		Raw time.Time `json:"raw"`
 	} `json:"completed_time"`
-	LastUpdateTime struct {
+	LastUpdatedTime struct {
 		Raw time.Time `json:"raw"`
 	} `json:"last_update_time"`
 	State struct {
@@ -98,18 +98,18 @@ func (r SearchArtworksResponse) ToDomainResult() model.GetArtworksResult {
 			ArtistProfilePath: v.ArtistProfilePath.Raw,
 			DayUsed:           time.Duration(v.DayUsed.Raw),
 			IsR18:             isR18,
-			Anonymous:         anonymous,
-			Path:              v.Path.Raw,
-			Rating:            int(v.Rating.Raw),
-			Title:             v.Title.Raw,
-			TextContent:       v.TextContent.Raw,
-			Views:             int(v.Views.Raw),
-			FavorCount:        int(v.FavorCount.Raw),
-			CreateTime:        v.CreateTime.Raw,
-			StartTime:         v.StartTime.Raw,
-			CompletedTime:     v.CompletedTime.Raw,
-			LastUpdateTime:    v.LastUpdateTime.Raw,
-			State:             v.State.Raw,
+			Anonymous:       anonymous,
+			Path:            v.Path.Raw,
+			Rating:          int(v.Rating.Raw),
+			Title:           v.Title.Raw,
+			TextContent:     v.TextContent.Raw,
+			Views:           int(v.Views.Raw),
+			FavorCount:      int(v.FavorCount.Raw),
+			CreateTime:      v.CreateTime.Raw,
+			StartTime:       v.StartTime.Raw,
+			CompletedTime:   v.CompletedTime.Raw,
+			LastUpdatedTime: v.LastUpdatedTime.Raw,
+			State:           v.State.Raw,
 		})
 	}
 

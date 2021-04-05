@@ -9,10 +9,21 @@ type ArtistUpdater struct {
 	ProfilePath *string
 	State       *UserState
 
-	ArtistIntro    *ArtistIntro
-	ArtistBoard    *ArtistBoard
+	// ArtistIntro
+	YearOfDrawing *int
+	ArtTypes      *[]string
+
+	// ArtistBoard
+	Desc *string
+
 	PaymentMethods *[]string
 
-	CommissionDetails *CommissionDetails
-	LastUpdateTime    *time.Time
+	// CommissionDetails
+	CommissionRequestCount *int
+	CommissionAcceptCount  *int
+	CommissionSuccessCount *int
+	AvgRatings             *float64
+	LastRequestTime        *time.Time
+
+	LastUpdatedTime *time.Time
 }

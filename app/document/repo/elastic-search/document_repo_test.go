@@ -97,27 +97,28 @@ func TestUpdateArtist(t *testing.T) {
 	state := model.UserStateTerminated
 	now := time.Now()
 	avgRatings := 3.2
+	yearOfDrawing := 999
+	artTypes := []string{"Type1_update", "Type2_update"}
+	commissionRequestCount := 9
+	commissionAcceptCount := 9
+	commissionSuccessCount := 9
+
+	desc := "Desc_update"
 	artistUpdater := model.ArtistUpdater{
-		ArtistID:    "artistID",
-		UserName:    &userName,
-		ProfilePath: &profilePath,
-		State:       &state,
-		ArtistIntro: &model.ArtistIntro{
-			YearOfDrawing: 999,
-			ArtTypes:      []string{"Type1_update", "Type2_update"},
-		},
-		ArtistBoard: &model.ArtistBoard{
-			Desc: "Desc_update",
-		},
-		PaymentMethods: &[]string{"payment_update", "payment_update__"},
-		CommissionDetails: &model.CommissionDetails{
-			CommissionRequestCount: 99,
-			CommissionAcceptCount:  99,
-			CommissionSuccessCount: 99,
-			AvgRatings:             &avgRatings,
-			LastRequestTime:        &now,
-		},
-		LastUpdateTime: &now,
+		ArtistID:               "artistID",
+		UserName:               &userName,
+		ProfilePath:            &profilePath,
+		State:                  &state,
+		YearOfDrawing:          &yearOfDrawing,
+		ArtTypes:               &artTypes,
+		Desc:                   &desc,
+		PaymentMethods:         &[]string{"payment_update", "payment_update__"},
+		CommissionRequestCount: &commissionRequestCount,
+		CommissionAcceptCount:  &commissionAcceptCount,
+		CommissionSuccessCount: &commissionSuccessCount,
+		AvgRatings:             &avgRatings,
+		LastRequestTime:        &now,
+		LastUpdatedTime:        &now,
 	}
 	id, err := repo.UpdateArtist(ctx, artistUpdater)
 	assert.NoError(t, err)
@@ -187,7 +188,7 @@ func TestUpdateArtwork(t *testing.T) {
 	textContent := faker.LoremIpsumParagraph(3, 5, 10, "\n")
 	views := faker.Number(100, 100000)
 	favorCount := faker.Number(100, 100000)
-	lastUpdateTime := faker.Date()
+	lastUpdatedTime := faker.Date()
 	state := model2.ArtworkStateDeleted
 	updater := model2.ArtworkUpdater{
 		ID:                "artworkID",
@@ -197,7 +198,7 @@ func TestUpdateArtwork(t *testing.T) {
 		TextContent:       &textContent,
 		Views:             &views,
 		FavorCount:        &favorCount,
-		LastUpdateTime:    &lastUpdateTime,
+		LastUpdatedTime:   &lastUpdatedTime,
 		State:             &state,
 	}
 	id, err := repo.UpdateArtwork(ctx, updater)

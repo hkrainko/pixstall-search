@@ -60,8 +60,8 @@ func getSearchArtworksFilter(filter model.ArtworkFilter) []map[string]interface{
 	if filter.CompletedTime != nil {
 		filters = append(filters, map[string]interface{}{"completed_time": filter.CompletedTime})
 	}
-	if filter.LastUpdateTime != nil {
-		filters = append(filters, map[string]interface{}{"last_update_time": filter.LastUpdateTime})
+	if filter.LastUpdatedTime != nil {
+		filters = append(filters, map[string]interface{}{"last_update_time": filter.LastUpdatedTime})
 	}
 	return filters
 }
@@ -76,7 +76,7 @@ func getSearchArtworksSorter(sorter model.ArtworkSorter) SearchArtworksSorter {
 		sorter.CreateTime == nil &&
 		sorter.StartTime == nil &&
 		sorter.CompletedTime == nil &&
-		sorter.LastUpdateTime == nil {
+		sorter.LastUpdatedTime == nil {
 		desc := model2.SortOrderDescending
 		return SearchArtworksSorter{
 			Score: &desc,
@@ -84,29 +84,29 @@ func getSearchArtworksSorter(sorter model.ArtworkSorter) SearchArtworksSorter {
 	}
 
 	return SearchArtworksSorter{
-		ArtistID:       sorter.ArtistID,
-		UserName:       sorter.UserName,
-		DayUsed:        sorter.DayUsed,
-		Rating:         sorter.Rating,
-		Views:          sorter.Views,
-		FavorCount:     sorter.FavorCount,
-		CreateTime:     sorter.CreateTime,
-		StartTime:      sorter.StartTime,
-		CompletedTime:  sorter.CompletedTime,
-		LastUpdateTime: sorter.LastUpdateTime,
+		ArtistID:        sorter.ArtistID,
+		UserName:        sorter.UserName,
+		DayUsed:         sorter.DayUsed,
+		Rating:          sorter.Rating,
+		Views:           sorter.Views,
+		FavorCount:      sorter.FavorCount,
+		CreateTime:      sorter.CreateTime,
+		StartTime:       sorter.StartTime,
+		CompletedTime:   sorter.CompletedTime,
+		LastUpdatedTime: sorter.LastUpdatedTime,
 	}
 }
 
 type SearchArtworksSorter struct {
-	Score          *model2.SortOrder `json:"_score,omitempty"`
-	ArtistID       *model2.SortOrder `json:"artist_id,omitempty"`
-	UserName       *model2.SortOrder `json:"user_name,omitempty"`
-	DayUsed        *model2.SortOrder `json:"day_used,omitempty"`
-	Rating         *model2.SortOrder `json:"rating,omitempty"`
-	Views          *model2.SortOrder `json:"views,omitempty"`
-	FavorCount     *model2.SortOrder `json:"favor_count,omitempty"`
-	CreateTime     *model2.SortOrder `json:"create_time,omitempty"`
-	StartTime      *model2.SortOrder `json:"start_time,omitempty"`
-	CompletedTime  *model2.SortOrder `json:"completed_time,omitempty"`
-	LastUpdateTime *model2.SortOrder `json:"last_update_time,omitempty"`
+	Score           *model2.SortOrder `json:"_score,omitempty"`
+	ArtistID        *model2.SortOrder `json:"artist_id,omitempty"`
+	UserName        *model2.SortOrder `json:"user_name,omitempty"`
+	DayUsed         *model2.SortOrder `json:"day_used,omitempty"`
+	Rating          *model2.SortOrder `json:"rating,omitempty"`
+	Views           *model2.SortOrder `json:"views,omitempty"`
+	FavorCount      *model2.SortOrder `json:"favor_count,omitempty"`
+	CreateTime      *model2.SortOrder `json:"create_time,omitempty"`
+	StartTime       *model2.SortOrder `json:"start_time,omitempty"`
+	CompletedTime   *model2.SortOrder `json:"completed_time,omitempty"`
+	LastUpdatedTime *model2.SortOrder `json:"last_updated_time,omitempty"`
 }
