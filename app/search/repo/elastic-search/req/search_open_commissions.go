@@ -6,52 +6,58 @@ import (
 )
 
 type SearchOpenCommissionsRequest struct {
-	Query  string                       `json:"query"`
-	Page   model2.PageFilter            `json:"page"`
-	Filter *SearchOpenCommissionsFilter `json:"filters,omitempty"`
-	Sort   *SearchOpenCommissionsSorter `json:"sort,omitempty"`
+	Query   string                       `json:"query"`
+	Page    model2.PageFilter            `json:"page"`
+	Filters *ESFilters                   `json:"filters,omitempty"`
+	Sort    *SearchOpenCommissionsSorter `json:"sort,omitempty"`
 }
 
 func NewSearchOpenCommissionsRequest(query string, filter model.OpenCommissionFilter, sorter model.OpenCommissionSorter) SearchOpenCommissionsRequest {
-	f := getSearchOpenCommissionFilter(filter)
+	var filters *ESFilters
+	if fs := getSearchOpenCommissionFilter(filter); len(fs) > 0 {
+		filters = &ESFilters{
+			All: fs,
+		}
+	}
 	s := getSearchOpenCommissionsSorter(sorter)
 	return SearchOpenCommissionsRequest{
-		Query:  query,
-		Page:   filter.PageFilter,
-		Filter: &f,
-		Sort:   &s,
+		Query:   query,
+		Page:    filter.PageFilter,
+		Filters: filters,
+		Sort:    &s,
 	}
 }
 
-func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) SearchOpenCommissionsFilter {
-	var convPrice *model2.FloatRange
+func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) []map[string]interface{} {
+	var filters []map[string]interface{}
+	if filter.State != nil {
+		filters = append(filters, map[string]interface{}{"state": filter.State})
+	}
 	if filter.PriceAmount != nil && filter.PriceCurrency != nil {
 		from := filter.PriceCurrency.GetConvPrice(*filter.PriceAmount.From)
 		to := filter.PriceCurrency.GetConvPrice(*filter.PriceAmount.To)
-		convPrice = &model2.FloatRange{
+		convPrice := &model2.FloatRange{
 			From: &from,
 			To:   &to,
 		}
+		filters = append(filters, map[string]interface{}{"conv_price": convPrice})
 	}
-	return SearchOpenCommissionsFilter{
-		State:          filter.State,
-		ConvPrice:      convPrice,
-		DayNeedFrom:    filter.DayNeedFrom,
-		DayNeedTo:      filter.DayNeedTo,
-		IsR18:          filter.IsR18,
-		AllowBePrivate: filter.AllowBePrivate,
-		AllowAnonymous: filter.AllowAnonymous,
+	if filter.DayNeedFrom != nil {
+		filters = append(filters, map[string]interface{}{"day_need_from": filter.DayNeedFrom})
 	}
-}
-
-type SearchOpenCommissionsFilter struct {
-	State          *[]model.OpenCommissionState `json:"state,omitempty"`
-	ConvPrice      *model2.FloatRange           `json:"conv_price,omitempty"`
-	DayNeedFrom    *model2.IntRange             `json:"day_need_from,omitempty"`
-	DayNeedTo      *model2.IntRange             `json:"day_need_to,omitempty"`
-	IsR18          *bool                        `json:"is_r18,omitempty"`
-	AllowBePrivate *bool                        `json:"allow_be_private,omitempty"`
-	AllowAnonymous *bool                        `json:"allow_anonymous,omitempty"`
+	if filter.DayNeedTo != nil {
+		filters = append(filters, map[string]interface{}{"day_need_to": filter.DayNeedTo})
+	}
+	if filter.IsR18 != nil {
+		filters = append(filters, map[string]interface{}{"is_r18": filter.IsR18})
+	}
+	if filter.AllowBePrivate != nil {
+		filters = append(filters, map[string]interface{}{"allow_be_private": filter.AllowBePrivate})
+	}
+	if filter.AllowAnonymous != nil {
+		filters = append(filters, map[string]interface{}{"allow_anonymous": filter.AllowAnonymous})
+	}
+	return filters
 }
 
 func getSearchOpenCommissionsSorter(sorter model.OpenCommissionSorter) SearchOpenCommissionsSorter {

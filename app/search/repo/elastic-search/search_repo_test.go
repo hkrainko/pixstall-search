@@ -160,7 +160,7 @@ func TestSearchOpenCommissions(t *testing.T) {
 		CreateTime:      nil,
 		LastUpdatedTime: nil,
 	}
-	getOpenCommResult, err := repo.SearchOpenCommissions(ctx, "open", filter, sorter)
+	getOpenCommResult, err := repo.SearchOpenCommissions(ctx, "1", filter, sorter)
 	assert.NoError(t, err)
 	assert.NotNil(t, getOpenCommResult)
 	if getOpenCommResult != nil {

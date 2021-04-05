@@ -3,55 +3,67 @@ package req
 import (
 	"pixstall-search/domain/artwork/model"
 	model2 "pixstall-search/domain/model"
-	"time"
 )
 
 type SearchArtworksRequest struct {
 	Query  string                `json:"query"`
 	Page   model2.PageFilter     `json:"page"`
-	Filter *SearchArtworksFilter `json:"filters,omitempty"`
+	Filter *ESFilters            `json:"filters,omitempty"`
 	Sort   *SearchArtworksSorter `json:"sort,omitempty"`
 }
 
 func NewSearchArtworksRequest(query string, filter model.ArtworkFilter, sorter model.ArtworkSorter) SearchArtworksRequest {
-	f := getSearchArtworksFilter(filter)
+	var filters *ESFilters
+	if fs := getSearchArtworksFilter(filter); len(fs) > 0 {
+		filters = &ESFilters{
+			All: fs,
+		}
+	}
 	s := getSearchArtworksSorter(sorter)
 	return SearchArtworksRequest{
 		Query:  query,
 		Page:   filter.PageFilter,
-		Filter: &f,
+		Filter: filters,
 		Sort:   &s,
 	}
 }
 
-func getSearchArtworksFilter(filter model.ArtworkFilter) SearchArtworksFilter {
-	return SearchArtworksFilter{
-		State:          filter.State,
-		DayUsed:        filter.DayUsed,
-		IsR18:          filter.IsR18,
-		Anonymous:      filter.Anonymous,
-		Rating:         filter.Rating,
-		Views:          filter.Views,
-		FavorCount:     filter.FavorCount,
-		CreateTime:     filter.CreateTime,
-		StartTime:      filter.StartTime,
-		CompletedTime:  filter.CompletedTime,
-		LastUpdateTime: filter.LastUpdateTime,
+func getSearchArtworksFilter(filter model.ArtworkFilter) []map[string]interface{} {
+	var filters []map[string]interface{}
+	if filter.State != nil {
+		filters = append(filters, map[string]interface{}{"state": filter.State})
 	}
-}
-
-type SearchArtworksFilter struct {
-	State          *[]model.ArtworkState `json:"state,omitempty"`
-	DayUsed        *time.Duration        `json:"day_used,omitempty"`
-	IsR18          *bool                 `json:"is_r18,omitempty"`
-	Anonymous      *bool                 `json:"anonymous,omitempty"`
-	Rating         *model2.IntRange      `json:"rating,omitempty"`
-	Views          *model2.IntRange      `json:"views,omitempty"`
-	FavorCount     *model2.IntRange      `json:"favor_count,omitempty"`
-	CreateTime     *model2.TimeRange     `json:"create_time,omitempty"`
-	StartTime      *model2.TimeRange     `json:"start_time,omitempty"`
-	CompletedTime  *model2.TimeRange     `json:"completed_time,omitempty"`
-	LastUpdateTime *model2.TimeRange     `json:"last_update_time,omitempty"`
+	if filter.DayUsed != nil {
+		filters = append(filters, map[string]interface{}{"day_used": filter.DayUsed})
+	}
+	if filter.IsR18 != nil {
+		filters = append(filters, map[string]interface{}{"is_r18": filter.IsR18})
+	}
+	if filter.Anonymous != nil {
+		filters = append(filters, map[string]interface{}{"anonymous": filter.Anonymous})
+	}
+	if filter.Rating != nil {
+		filters = append(filters, map[string]interface{}{"rating": filter.Rating})
+	}
+	if filter.Views != nil {
+		filters = append(filters, map[string]interface{}{"views": filter.Views})
+	}
+	if filter.FavorCount != nil {
+		filters = append(filters, map[string]interface{}{"favor_count": filter.FavorCount})
+	}
+	if filter.CreateTime != nil {
+		filters = append(filters, map[string]interface{}{"create_time": filter.CreateTime})
+	}
+	if filter.StartTime != nil {
+		filters = append(filters, map[string]interface{}{"start_time": filter.StartTime})
+	}
+	if filter.CompletedTime != nil {
+		filters = append(filters, map[string]interface{}{"completed_time": filter.CompletedTime})
+	}
+	if filter.LastUpdateTime != nil {
+		filters = append(filters, map[string]interface{}{"last_update_time": filter.LastUpdateTime})
+	}
+	return filters
 }
 
 func getSearchArtworksSorter(sorter model.ArtworkSorter) SearchArtworksSorter {

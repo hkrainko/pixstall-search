@@ -8,18 +8,14 @@ import (
 type SearchArtistsRequest struct {
 	Query   string               `json:"query"`
 	Page    model2.PageFilter    `json:"page"`
-	Filters *Filters             `json:"filters,omitempty"`
+	Filters *ESFilters           `json:"filters,omitempty"`
 	Sort    *SearchArtistsSorter `json:"sort,omitempty"`
 }
 
-type Filters struct {
-	All []map[string]interface{} `json:"all"`
-}
-
 func NewSearchArtistRequest(query string, filter model.ArtistFilter, sorter model.ArtistSorter) SearchArtistsRequest {
-	var filters *Filters
+	var filters *ESFilters
 	if fs := getSearchArtistsFilters(filter); len(fs) > 0 {
-		filters = &Filters{
+		filters = &ESFilters{
 			All: fs,
 		}
 	}
@@ -62,18 +58,6 @@ func getSearchArtistsFilters(filter model.ArtistFilter) []map[string]interface{}
 		filters = append(filters, map[string]interface{}{"last_request_time": filter.LastRequestTime})
 	}
 	return filters
-}
-
-type SearchArtistsFilter struct {
-	State                  *[]model.UserState `json:"state,omitempty"`
-	RegTime                *model2.TimeRange  `json:"reg_time,omitempty"`
-	PaymentMethods         *[]string          `json:"payment_methods,omitempty"`
-	YearOfDrawing          *model2.TimeRange  `json:"year_of_drawing,omitempty"`
-	CommissionRequestCount *model2.IntRange   `json:"commission_request_count,omitempty"`
-	CommissionAcceptCount  *model2.IntRange   `json:"commission_accept_count,omitempty"`
-	CommissionSuccessCount *model2.IntRange   `json:"commission_success_count,omitempty"`
-	AvgRatings             *model2.FloatRange `json:"avg_ratings,omitempty"`
-	LastRequestTime        *model2.TimeRange  `json:"last_request_time,omitempty"`
 }
 
 func getSearchArtistsSorter(sorter model.ArtistSorter) SearchArtistsSorter {
