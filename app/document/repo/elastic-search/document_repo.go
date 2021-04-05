@@ -15,11 +15,16 @@ import (
 
 type ElasticSearchHost struct {
 	ApiPath string
-	Key string
+	SearchKey string
+	PrivateKey string
 }
 
-func (e ElasticSearchHost) BearToken() string {
-	return "Bearer " + e.Key
+func (e ElasticSearchHost) BearerSearchToken() string {
+	return "Bearer " + e.SearchKey
+}
+
+func (e ElasticSearchHost) BearerPrivateToken() string {
+	return "Bearer " + e.PrivateKey
 }
 
 type elasticSearchDocumentRepo struct {
@@ -40,7 +45,7 @@ func (e elasticSearchDocumentRepo) AddArtist(ctx context.Context, creator model.
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewAddArtistRequest(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artists-search-engine/documents")
@@ -60,7 +65,7 @@ func (e elasticSearchDocumentRepo) UpdateArtist(ctx context.Context, updater mod
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewUpdateArtistRequest(updater)).
 		SetResult(&result).
 		Patch(e.host.ApiPath + "/artists-search-engine/documents")
@@ -80,7 +85,7 @@ func (e elasticSearchDocumentRepo) AddArtwork(ctx context.Context, creator model
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewAddArtworkRequest(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artworks-search-engine/documents")
@@ -101,7 +106,7 @@ func (e elasticSearchDocumentRepo) UpdateArtwork(ctx context.Context, updater mo
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewUpdateArtworkRequest(updater)).
 		SetResult(&result).
 		Patch(e.host.ApiPath + "/artworks-search-engine/documents")
@@ -121,7 +126,7 @@ func (e elasticSearchDocumentRepo) AddOpenCommission(ctx context.Context, creato
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewAddOpenCommissionRequest(creator)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/open-commissions-search-engine/documents")
@@ -142,7 +147,7 @@ func (e elasticSearchDocumentRepo) UpdateOpenCommission(ctx context.Context, upd
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerPrivateToken()).
 		SetBody(model4.NewUpdateOpenCommissionRequest(updater)).
 		SetResult(&result).
 		Patch(e.host.ApiPath + "/open-commissions-search-engine/documents")

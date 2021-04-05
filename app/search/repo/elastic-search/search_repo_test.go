@@ -34,9 +34,9 @@ func TestMain(m *testing.M) {
 func setup() {
 	fmt.Println("Before eacg tests")
 	ctx = context.Background()
-	repo = NewElasticSearchSearchRepo(elastic_search.ElasticSearchHost{
-		ApiPath: apiPath,
-		Key:     key,
+	repo = NewElasticSearchSearchRepo(&elastic_search.ElasticSearchHost{
+		ApiPath:   apiPath,
+		SearchKey: key,
 	})
 }
 
@@ -49,10 +49,10 @@ func TestSearchArtists(t *testing.T) {
 	yearOfDrawingForm := 0
 	yearOfDrawingTo := 100
 	filter := model.ArtistFilter{
-		State:                  &state,
-		RegTime:                nil,
-		PaymentMethods:         nil,
-		YearOfDrawing:          &model2.IntRange{
+		State:          &state,
+		RegTime:        nil,
+		PaymentMethods: nil,
+		YearOfDrawing: &model2.IntRange{
 			From: &yearOfDrawingForm,
 			To:   &yearOfDrawingTo,
 		},
@@ -100,7 +100,7 @@ func TestSearchArtworks(t *testing.T) {
 		StartTime:      nil,
 		CompletedTime:  nil,
 		LastUpdateTime: nil,
-		PageFilter:     model2.PageFilter{
+		PageFilter: model2.PageFilter{
 			Current: 1,
 			Size:    100,
 		},
@@ -143,7 +143,7 @@ func TestSearchOpenCommissions(t *testing.T) {
 			From: &dayNeedFromFrom,
 			To:   &dayNeedFromTo,
 		},
-		DayNeedTo: nil,
+		DayNeedTo:      nil,
 		IsR18:          nil,
 		AllowBePrivate: nil,
 		AllowAnonymous: nil,

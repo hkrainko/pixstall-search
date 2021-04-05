@@ -33,9 +33,9 @@ func TestMain(m *testing.M) {
 func setup() {
 	fmt.Println("Before eacg tests")
 	ctx = context.Background()
-	repo = NewElasticSearchDocumentRepo(ElasticSearchHost{
-		ApiPath: apiPath,
-		Key:     key,
+	repo = NewElasticSearchDocumentRepo(&ElasticSearchHost{
+		ApiPath:    apiPath,
+		PrivateKey: key,
 	})
 }
 

@@ -37,7 +37,7 @@ func (e elasticSearchSearchRepo) SearchArtists(ctx context.Context, query string
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerSearchToken()).
 		SetBody(req.NewSearchArtistRequest(query, filter, sorter)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artists-search-engine/search")
@@ -56,7 +56,7 @@ func (e elasticSearchSearchRepo) SearchArtworks(ctx context.Context, query strin
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerSearchToken()).
 		SetBody(req.NewSearchArtworksRequest(query, filter, sorter)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/artworks-search-engine/search")
@@ -75,7 +75,7 @@ func (e elasticSearchSearchRepo) SearchOpenCommissions(ctx context.Context, quer
 		R().
 		EnableTrace().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", e.host.BearToken()).
+		SetHeader("Authorization", e.host.BearerSearchToken()).
 		SetBody(req.NewSearchOpenCommissionsRequest(query, filter, sorter)).
 		SetResult(&resp).
 		Post(e.host.ApiPath + "/open-commissions-search-engine/search")
