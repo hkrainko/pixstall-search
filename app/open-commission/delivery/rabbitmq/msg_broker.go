@@ -15,7 +15,7 @@ type OpenCommissionMessageBroker struct {
 	ch      *amqp.Channel
 }
 
-func NewCommissionMessageBroker(useCase open_commission.UseCase, conn *amqp.Connection) OpenCommissionMessageBroker {
+func NewRabbitMQOpenCommissionMessageBroker(useCase open_commission.UseCase, conn *amqp.Connection) OpenCommissionMessageBroker {
 	ch, err := conn.Channel()
 	if err != nil {
 		log.Fatalf("Failed to open a channel %v", err)

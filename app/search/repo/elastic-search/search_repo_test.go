@@ -81,7 +81,7 @@ func TestSearchArtists(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, getArtistsResult)
 	if getArtistsResult != nil {
-		assert.Greater(t, len(getArtistsResult.Artists), 0)
+		assert.GreaterOrEqual(t, len(getArtistsResult.Artists), 0)
 	}
 }
 
@@ -121,7 +121,7 @@ func TestSearchArtworks(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, getArtworkResult)
 	if getArtworkResult != nil {
-		assert.Greater(t, len(getArtworkResult.Artworks), 0)
+		assert.GreaterOrEqual(t, len(getArtworkResult.Artworks), 0)
 	}
 }
 
@@ -164,6 +164,6 @@ func TestSearchOpenCommissions(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, getOpenCommResult)
 	if getOpenCommResult != nil {
-		assert.Greater(t, len(getOpenCommResult.OpenCommissions), 0)
+		assert.GreaterOrEqual(t, len(getOpenCommResult.OpenCommissions), 0)
 	}
 }

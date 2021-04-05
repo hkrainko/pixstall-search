@@ -2,22 +2,25 @@ package usecase
 
 import (
 	"context"
+	"pixstall-search/domain/document"
 	open_commission "pixstall-search/domain/open-commission"
 	"pixstall-search/domain/open-commission/model"
 )
 
 type openCommissionUseCase struct {
-
+	docRepo document.Repo
 }
 
-func NewOpenCommissionUseCase() open_commission.UseCase {
-	return &openCommissionUseCase{}
+func NewOpenCommissionUseCase(docRepo document.Repo) open_commission.UseCase {
+	return &openCommissionUseCase{
+		docRepo: docRepo,
+	}
 }
 
 func (o openCommissionUseCase) CreateOpenCommission(ctx context.Context, creator model.OpenCommissionCreator) (*string, error) {
-	panic("implement me")
+	return o.docRepo.AddOpenCommission(ctx, creator)
 }
 
 func (o openCommissionUseCase) UpdateOpenCommission(ctx context.Context, updater model.OpenCommissionUpdater) (*string, error) {
-	panic("implement me")
+	return o.docRepo.UpdateOpenCommission(ctx, updater)
 }

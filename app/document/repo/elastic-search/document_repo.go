@@ -23,11 +23,11 @@ func (e ElasticSearchHost) BearToken() string {
 }
 
 type elasticSearchDocumentRepo struct {
-	host ElasticSearchHost
+	host *ElasticSearchHost
 	client *resty.Client
 }
 
-func NewElasticSearchDocumentRepo(host ElasticSearchHost) document.Repo {
+func NewElasticSearchDocumentRepo(host *ElasticSearchHost) document.Repo {
 	return &elasticSearchDocumentRepo{
 		host: host,
 		client: resty.New(),

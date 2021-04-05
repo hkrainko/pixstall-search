@@ -16,11 +16,11 @@ import (
 )
 
 type elasticSearchSearchRepo struct {
-	host   elastic_search.ElasticSearchHost
+	host   *elastic_search.ElasticSearchHost
 	client *resty.Client
 }
 
-func NewElasticSearchSearchRepo(host elastic_search.ElasticSearchHost) search.Repo {
+func NewElasticSearchSearchRepo(host *elastic_search.ElasticSearchHost) search.Repo {
 	return &elasticSearchSearchRepo{
 		host:   host,
 		client: resty.New(),
