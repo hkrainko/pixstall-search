@@ -17,9 +17,9 @@ func main() {
 
 	// Elasticsearch
 	host := elastic_search.ElasticSearchHost{
-		ApiPath:    "http://localhost:3002/api/as/v1/engines",
-		SearchKey:  "search-21ovx6yqaffz92sxw8qpu23p",
-		PrivateKey: "private-jxcq12x5tuko6rkbh28gkbdk",
+		ApiPath:    "https://kai-dev-deployment.ent.ap-southeast-1.aws.found.io/api/as/v1/engines",
+		SearchKey:  "search-gs7vdynu8fmqrpyz7vzhzf52",
+		PrivateKey: "private-1xkbqfccp6xkrfo5t8j3vpia",
 	}
 
 	artistMsgBroker := InitArtistMessageBroker(rbMQConn, &host)

@@ -19,8 +19,8 @@ var repo document.Repo
 var ctx context.Context
 var faker *gofakeit.Faker
 
-const apiPath = "http://localhost:3002/api/as/v1/engines"
-const key = "private-jxcq12x5tuko6rkbh28gkbdk"
+const apiPath = "https://kai-dev-deployment.ent.ap-southeast-1.aws.found.io/api/as/v1/engines"
+const key = "private-1xkbqfccp6xkrfo5t8j3vpia"
 
 func TestMain(m *testing.M) {
 	faker = gofakeit.New(0)
@@ -242,6 +242,39 @@ func TestAddOpenCommission(t *testing.T) {
 	if id != nil {
 		assert.Equal(t, "openCommissionID", *id)
 	}
+}
+
+func TestAddOpenCommissions_multiple(t *testing.T) {
+	var err error
+	for i := range [100]int{} {
+		creator := model3.OpenCommissionCreator{
+			ID:       "openCommissionID" + strconv.Itoa(i),
+			ArtistID: faker.UUID(),
+			Title:    faker.Sentence(10),
+			Desc:     faker.Paragraph(2, 3, 4, "\n"),
+			Price: model3.Price{
+				Amount:   faker.Price(100, 1000),
+				Currency: model3.CurrencyHKD,
+			},
+			DayNeed: model3.DayNeed{
+				From: faker.Number(10, 20),
+				To:   faker.Number(20, 30),
+			},
+			IsR18:          faker.Bool(),
+			AllowBePrivate: faker.Bool(),
+			AllowAnonymous: faker.Bool(),
+			SampleImagePaths: []string{
+				faker.ImageURL(100, 100),
+				faker.ImageURL(100, 100),
+				faker.ImageURL(100, 100),
+			},
+			State:           model3.OpenCommissionStateActive,
+			CreateTime:      faker.Date(),
+			LastUpdatedTime: faker.Date(),
+		}
+		_, err = repo.AddOpenCommission(ctx, creator)
+	}
+	assert.NoError(t, err)
 }
 
 func TestUpdateOpenCommission(t *testing.T) {

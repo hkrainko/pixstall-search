@@ -20,8 +20,8 @@ var repo search.Repo
 var ctx context.Context
 var faker *gofakeit.Faker
 
-const apiPath = "http://localhost:3002/api/as/v1/engines"
-const key = "search-21ovx6yqaffz92sxw8qpu23p"
+const apiPath = "https://kai-dev-deployment.ent.ap-southeast-1.aws.found.io/api/as/v1/engines"
+const key = "search-gs7vdynu8fmqrpyz7vzhzf52"
 
 func TestMain(m *testing.M) {
 	faker = gofakeit.New(0)
