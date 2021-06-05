@@ -13,6 +13,23 @@ const (
 	CurrencyUSD Currency = "USD"
 )
 
+func NewCurrency(s string) *Currency {
+	var currency Currency
+	switch s {
+	case "hkd", "HKD":
+		currency = CurrencyHKD
+		return &currency
+	case "twd", "TWD":
+		currency = CurrencyTWD
+		return &currency
+	case "usd", "USD":
+		currency = CurrencyUSD
+		return &currency
+	default:
+		return nil
+	}
+}
+
 func (p Price) GetConvPrice() float64 {
 	switch p.Currency {
 	case CurrencyUSD:
