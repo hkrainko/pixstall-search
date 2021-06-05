@@ -139,11 +139,10 @@ func TestSearchOpenCommissions(t *testing.T) {
 			To:   &PriceAmountTo,
 		},
 		PriceCurrency: &priceCurrency,
-		DayNeedFrom: &model2.IntRange{
+		DayNeed: &model2.IntRange{
 			From: &dayNeedFromFrom,
 			To:   &dayNeedFromTo,
 		},
-		DayNeedTo:      nil,
 		IsR18:          nil,
 		AllowBePrivate: nil,
 		AllowAnonymous: nil,

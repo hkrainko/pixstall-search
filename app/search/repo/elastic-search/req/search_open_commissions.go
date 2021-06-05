@@ -42,20 +42,34 @@ func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) []map[stri
 		}
 		filters = append(filters, map[string]interface{}{"conv_price": convPrice})
 	}
-	if filter.DayNeedFrom != nil {
-		filters = append(filters, map[string]interface{}{"day_need_from": filter.DayNeedFrom})
-	}
-	if filter.DayNeedTo != nil {
-		filters = append(filters, map[string]interface{}{"day_need_to": filter.DayNeedTo})
+	if filter.DayNeed != nil {
+		if filter.DayNeed.From != nil {
+			filters = append(filters, map[string]interface{}{"day_need_from": filter.DayNeed.From})
+		}
+		if filter.DayNeed.To != nil {
+			filters = append(filters, map[string]interface{}{"day_need_to": filter.DayNeed.To})
+		}
 	}
 	if filter.IsR18 != nil {
-		filters = append(filters, map[string]interface{}{"is_r18": filter.IsR18})
+		if *filter.IsR18 {
+			filters = append(filters, map[string]interface{}{"is_r18": "true"})
+		} else {
+			filters = append(filters, map[string]interface{}{"is_r18": "false"})
+		}
 	}
 	if filter.AllowBePrivate != nil {
-		filters = append(filters, map[string]interface{}{"allow_be_private": filter.AllowBePrivate})
+		if *filter.AllowBePrivate {
+			filters = append(filters, map[string]interface{}{"allow_be_private": "true"})
+		} else {
+			filters = append(filters, map[string]interface{}{"allow_be_private": "false"})
+		}
 	}
 	if filter.AllowAnonymous != nil {
-		filters = append(filters, map[string]interface{}{"allow_anonymous": filter.AllowAnonymous})
+		if *filter.AllowAnonymous {
+			filters = append(filters, map[string]interface{}{"allow_anonymous": "true"})
+		} else {
+			filters = append(filters, map[string]interface{}{"allow_anonymous": "false"})
+		}
 	}
 	return filters
 }

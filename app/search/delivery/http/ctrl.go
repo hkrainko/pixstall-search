@@ -63,9 +63,9 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 	}
 	dayNeed := model3.GetIntRange(getIntFromQuery("day-need.from", c), getIntFromQuery("day-need.to", c))
 
-	isR18 := c.Query("r18") == "y"
-	allowBePrivate := c.Query("allow-be-private") == "y"
-	allowAnonymous := c.Query("allow-anonymous") == "y"
+	isR18 := getBool("is_r18", c)
+	allowBePrivate := getBool("allow-be-private", c)
+	allowAnonymous := getBool("allow-anonymous", c)
 
 	pageCurrent := c.Query("page.current")
 	intPageCurrent, err := strconv.Atoi(pageCurrent)
@@ -85,9 +85,9 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 		PriceAmount:    priceAmount,
 		PriceCurrency:  priceCurrency,
 		DayNeed:        dayNeed,
-		IsR18:          &isR18,
-		AllowBePrivate: &allowBePrivate,
-		AllowAnonymous: &allowAnonymous,
+		IsR18:          isR18,
+		AllowBePrivate: allowBePrivate,
+		AllowAnonymous: allowAnonymous,
 		PageFilter: model3.PageFilter{
 			Current: intPageCurrent,
 			Size:    intPageSize,
@@ -113,6 +113,17 @@ func (s SearchController) searchArtists(c *gin.Context) {
 
 func (s SearchController) searchArtworks(c *gin.Context) {
 	//s, exist := c.GetQuery("s")
+}
+
+// Private
+
+func getBool(q string, c *gin.Context) *bool {
+	str, exist := c.GetQuery(q)
+	if !exist {
+		return nil
+	}
+	result := str == "true"
+	return &result
 }
 
 func getFloatFromQuery(q string, c *gin.Context) *float64 {
@@ -143,7 +154,7 @@ func GetOpenCommissionSorter(str string) *model2.OpenCommissionSorter {
 	sorter := model2.OpenCommissionSorter{}
 	symbol := str[:1]
 	if symbol == "-" {
-		switch str[1:len(str) - 1] {
+		switch str[1:len(str)] {
 		case "artist-id":
 			v := model3.SortOrderDescending
 			sorter.ArtistID = &v

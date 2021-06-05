@@ -18,6 +18,9 @@ type FloatRange struct {
 }
 
 func GetIntRange(from *int, to *int) *IntRange {
+	if from == nil && to == nil {
+		return nil
+	}
 	if from != nil && to != nil && *from > *to {
 		return nil
 	}
@@ -28,6 +31,9 @@ func GetIntRange(from *int, to *int) *IntRange {
 }
 
 func GetFloatRange(from *float64, to *float64) *FloatRange {
+	if from == nil && to == nil {
+		return nil
+	}
 	if from != nil && to != nil && *from > *to {
 		return nil
 	}
