@@ -63,7 +63,7 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 	}
 	dayNeed := model3.GetIntRange(getIntFromQuery("day-need.from", c), getIntFromQuery("day-need.to", c))
 
-	isR18 := getBool("is_r18", c)
+	isR18 := getBool("is-r18", c)
 	allowBePrivate := getBool("allow-be-private", c)
 	allowAnonymous := getBool("allow-anonymous", c)
 

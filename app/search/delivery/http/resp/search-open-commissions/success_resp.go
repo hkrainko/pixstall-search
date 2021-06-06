@@ -6,7 +6,7 @@ import (
 )
 
 type Response struct {
-	Page            model2.Page            `json:",inline"`
+	Page            model2.Page            `json:"page"`
 	OpenCommissions []model.OpenCommission `json:"openCommissions"`
 }
 

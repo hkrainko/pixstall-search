@@ -111,6 +111,6 @@ func (r SearchOpenCommissionsResponse) ToDomainResult() model.GetOpenCommissions
 			TotalResult: r.Meta.Page.TotalResult,
 			Size:        r.Meta.Page.Size,
 		},
-		OpenCommissions: nil,
+		OpenCommissions: openCommissions,
 	}
 }
