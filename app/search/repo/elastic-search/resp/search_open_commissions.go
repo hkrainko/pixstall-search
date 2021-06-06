@@ -68,7 +68,7 @@ type SearchOpenCommissionResponseResult struct {
 }
 
 func (r SearchOpenCommissionsResponse) ToDomainResult() model.GetOpenCommissionsResult {
-	var openCommissions []model.OpenCommission
+	openCommissions := make([]model.OpenCommission, 0)
 	for _, v := range r.Results {
 		isR18, err := strconv.ParseBool(v.IsR18.Raw)
 		if err != nil {

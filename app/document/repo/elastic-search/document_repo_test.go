@@ -246,7 +246,7 @@ func TestAddOpenCommission(t *testing.T) {
 
 func TestAddOpenCommissions_multiple(t *testing.T) {
 	var err error
-	for i := range [100]int{} {
+	for i := range [1000]int{} {
 		creator := model3.OpenCommissionCreator{
 			ID:       "openCommissionID" + strconv.Itoa(i),
 			ArtistID: faker.UUID(),
