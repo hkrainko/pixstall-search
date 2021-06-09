@@ -151,6 +151,9 @@ func getIntFromQuery(q string, c *gin.Context) *int {
 }
 
 func GetOpenCommissionSorter(str string) *model2.OpenCommissionSorter {
+	if str == "" {
+		return nil
+	}
 	sorter := model2.OpenCommissionSorter{}
 	symbol := str[:1]
 	if symbol == "-" {
