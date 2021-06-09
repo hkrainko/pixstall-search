@@ -43,11 +43,8 @@ func getSearchOpenCommissionFilter(filter model.OpenCommissionFilter) []map[stri
 		filters = append(filters, map[string]interface{}{"conv_price": convPrice})
 	}
 	if filter.DayNeed != nil {
-		if filter.DayNeed.From != nil {
-			filters = append(filters, map[string]interface{}{"day_need_from": filter.DayNeed.From})
-		}
-		if filter.DayNeed.To != nil {
-			filters = append(filters, map[string]interface{}{"day_need_to": filter.DayNeed.To})
+		if filter.DayNeed != nil {
+			filters = append(filters, map[string]interface{}{"day_need_to": filter.DayNeed})
 		}
 	}
 	if filter.IsR18 != nil {
