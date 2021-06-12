@@ -17,6 +17,19 @@ type FloatRange struct {
 	To   *float64 `json:"to,omitempty"`
 }
 
+func GetTimeRange(from *time.Time, to *time.Time) *TimeRange {
+	if from == nil && to == nil {
+		return nil
+	}
+	if from != nil && to != nil && to.After(*from) {
+		return nil
+	}
+	return &TimeRange{
+		From: from,
+		To:   to,
+	}
+}
+
 func GetIntRange(from *int, to *int) *IntRange {
 	if from == nil && to == nil {
 		return nil
