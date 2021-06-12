@@ -93,7 +93,7 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 			Size:    intPageSize,
 		},
 	}
-	sorter := GetOpenCommissionSorter(c.Query("sort"))
+	sorter := getOpenCommissionSorter(c.Query("sort"))
 	if sorter == nil {
 		c.AbortWithStatusJSON(http2.StatusBadRequest, error2.BadRequestError)
 		return
@@ -148,68 +148,4 @@ func getIntFromQuery(q string, c *gin.Context) *int {
 		return nil
 	}
 	return &result
-}
-
-func GetOpenCommissionSorter(str string) *model2.OpenCommissionSorter {
-	if str == "" {
-		return nil
-	}
-	sorter := model2.OpenCommissionSorter{}
-	symbol := str[:1]
-	if symbol == "-" {
-		switch str[1:len(str)] {
-		case "artist-id":
-			v := model3.SortOrderDescending
-			sorter.ArtistID = &v
-			return &sorter
-		case "price":
-			v := model3.SortOrderDescending
-			sorter.Price = &v
-			return &sorter
-		case "day-need-from":
-			v := model3.SortOrderDescending
-			sorter.DayNeedFrom = &v
-			return &sorter
-		case "day-need-to":
-			v := model3.SortOrderDescending
-			sorter.DayNeedTo = &v
-			return &sorter
-		case "create-time":
-			v := model3.SortOrderDescending
-			sorter.CreateTime = &v
-			return &sorter
-		case "last-updated-time":
-			v := model3.SortOrderDescending
-			sorter.LastUpdatedTime = &v
-			return &sorter
-		}
-	} else {
-		switch str {
-		case "artist-id":
-			v := model3.SortOrderAscending
-			sorter.ArtistID = &v
-			return &sorter
-		case "price":
-			v := model3.SortOrderAscending
-			sorter.Price = &v
-			return &sorter
-		case "day-need-from":
-			v := model3.SortOrderAscending
-			sorter.DayNeedFrom = &v
-			return &sorter
-		case "day-need-to":
-			v := model3.SortOrderAscending
-			sorter.DayNeedTo = &v
-			return &sorter
-		case "create-time":
-			v := model3.SortOrderAscending
-			sorter.CreateTime = &v
-			return &sorter
-		case "last-updated-time":
-			v := model3.SortOrderAscending
-			sorter.LastUpdatedTime = &v
-			return &sorter
-		}
-	}
-	return nil
 }

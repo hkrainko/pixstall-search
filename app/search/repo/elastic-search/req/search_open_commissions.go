@@ -96,7 +96,7 @@ func getSearchOpenCommissionsSorter(sorter model.OpenCommissionSorter) SearchOpe
 type SearchOpenCommissionsSorter struct {
 	Score           *model2.SortOrder `json:"_score,omitempty"`
 	ArtistID        *model2.SortOrder `json:"artist_id,omitempty"`
-	Price           *model2.SortOrder `json:"price,omitempty"`
+	Price           *model2.SortOrder `json:"conv_price,omitempty"`
 	DayNeedFrom     *model2.SortOrder `json:"day_need_from,omitempty"`
 	DayNeedTo       *model2.SortOrder `json:"day_need_to,omitempty"`
 	CreateTime      *model2.SortOrder `json:"create_time,omitempty"`
