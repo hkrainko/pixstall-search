@@ -2,13 +2,12 @@ package model
 
 import (
 	"pixstall-search/domain/model"
-	"time"
 )
 
 type ArtworkFilter struct {
 	State *[]ArtworkState
 
-	DayUsed   *time.Duration
+	DayUsed   *model.IntRange
 	IsR18     *bool
 	Anonymous *bool
 

@@ -4,8 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	http2 "net/http"
 	"pixstall-search/app/error/http"
+	search_artists "pixstall-search/app/search/delivery/http/resp/search-artists"
+	search_artworks "pixstall-search/app/search/delivery/http/resp/search-artworks"
 	search_open_commissions "pixstall-search/app/search/delivery/http/resp/search-open-commissions"
 	model4 "pixstall-search/domain/artist/model"
+	model5 "pixstall-search/domain/artwork/model"
 	error2 "pixstall-search/domain/error"
 	model3 "pixstall-search/domain/model"
 	model2 "pixstall-search/domain/open-commission/model"
@@ -63,7 +66,6 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 		return
 	}
 	dayNeed := model3.GetIntRange(getIntFromQuery("day-need.from", c), getIntFromQuery("day-need.to", c))
-
 	isR18 := getBool("is-r18", c)
 	allowBePrivate := getBool("allow-be-private", c)
 	allowAnonymous := getBool("allow-anonymous", c)
@@ -137,23 +139,63 @@ func (s SearchController) searchArtists(c *gin.Context) {
 			Size:    intPageSize,
 		},
 	}
-	sorter := getOpenCommissionSorter(c.Query("sort"))
+	sorter := getArtistSorter(c.Query("sort"))
 	if sorter == nil {
 		c.AbortWithStatusJSON(http2.StatusBadRequest, error2.BadRequestError)
 		return
 	}
 
-	result, err := s.useCase.SearchOpenCommissions(c, searchText, filter, *sorter)
+	result, err := s.useCase.SearchArtists(c, searchText, filter, *sorter)
 	if err != nil {
 		c.JSON(http.NewErrorResponse(err))
 		return
 	}
-	c.JSON(http2.StatusOK, search_open_commissions.NewResponse(*result))
+	c.JSON(http2.StatusOK, search_artists.NewResponse(*result))
 }
 
 func (s SearchController) searchArtworks(c *gin.Context) {
 	searchText := c.Query("s")
 	dayUsed := model3.GetIntRange(getIntFromQuery("day-used.from", c), getIntFromQuery("day-used.to", c))
+	isR18 := getBool("is-r18", c)
+	anonymous := getBool("anonymous", c)
+	completedTime := model3.GetTimeRange(getTimeFromQuery("completed-time.from", c), getTimeFromQuery("completed-time.to", c))
+
+	pageCurrent := c.Query("page.current")
+	intPageCurrent, err := strconv.Atoi(pageCurrent)
+	if err != nil {
+		c.AbortWithStatusJSON(http2.StatusBadRequest, error2.BadRequestError)
+		return
+	}
+	pageSize := c.Query("page.size")
+	intPageSize, err := strconv.Atoi(pageSize)
+	if err != nil {
+		c.AbortWithStatusJSON(http2.StatusBadRequest, error2.BadRequestError)
+		return
+	}
+
+	filter := model5.ArtworkFilter{
+		State:     nil,
+		DayUsed:   dayUsed,
+		IsR18:     isR18,
+		Anonymous: anonymous,
+		CompletedTime: completedTime,
+		PageFilter: model3.PageFilter{
+			Current: intPageCurrent,
+			Size:    intPageSize,
+		},
+	}
+	sorter := getArtworkSorter(c.Query("sort"))
+	if sorter == nil {
+		c.AbortWithStatusJSON(http2.StatusBadRequest, error2.BadRequestError)
+		return
+	}
+
+	result, err := s.useCase.SearchArtworks(c, searchText, filter, *sorter)
+	if err != nil {
+		c.JSON(http.NewErrorResponse(err))
+		return
+	}
+	c.JSON(http2.StatusOK, search_artworks.NewResponse(*result))
 }
 
 // Private
