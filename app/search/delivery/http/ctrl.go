@@ -113,7 +113,7 @@ func (s SearchController) searchOpenCommissions(c *gin.Context) {
 func (s SearchController) searchArtists(c *gin.Context) {
 	searchText := c.Query("s")
 	regTime := model3.GetTimeRange(getTimeFromQuery("reg-time.from", c), getTimeFromQuery("reg-time.to", c))
-	paymentMethods := c.QueryArray("payment-methods")
+	paymentMethods := getArrayFromQuery("payment-methods", c)
 	lastRequestTime := model3.GetTimeRange(getTimeFromQuery("last-request-time.from", c), getTimeFromQuery("last-request-time.to", c))
 
 	pageCurrent := c.Query("page.current")
@@ -132,7 +132,7 @@ func (s SearchController) searchArtists(c *gin.Context) {
 	filter := model4.ArtistFilter{
 		State: nil,
 		RegTime: regTime,
-		PaymentMethods: &paymentMethods,
+		PaymentMethods: paymentMethods,
 		LastRequestTime: lastRequestTime,
 		PageFilter: model3.PageFilter{
 			Current: intPageCurrent,
@@ -244,4 +244,12 @@ func getFloatFromQuery(q string, c *gin.Context) *float64 {
 		return nil
 	}
 	return &result
+}
+
+func getArrayFromQuery(q string, c *gin.Context) *[]string {
+	arr, exist := c.GetQueryArray(q)
+	if !exist {
+		return nil
+	}
+	return &arr
 }
