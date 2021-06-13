@@ -78,7 +78,7 @@ type SearchArtistsResponseResult struct {
 
 func (r SearchArtistsResponse) ToDomainResult() model.GetArtistsResult {
 
-	var artists []model.Artist
+	artists := make([]model.Artist, 0)
 	for _, v := range r.Results {
 		artists = append(artists, model.Artist{
 			User: model.User{

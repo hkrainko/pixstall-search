@@ -80,7 +80,7 @@ type SearchArtworkResponseResult struct {
 }
 
 func (r SearchArtworksResponse) ToDomainResult() model.GetArtworksResult {
-	var artworks []model.Artwork
+	artworks := make([]model.Artwork, 0)
 	for _, v := range r.Results {
 		isR18, err := strconv.ParseBool(v.IsR18.Raw)
 		if err != nil {
