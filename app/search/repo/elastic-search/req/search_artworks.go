@@ -37,10 +37,18 @@ func getSearchArtworksFilter(filter model.ArtworkFilter) []map[string]interface{
 		filters = append(filters, map[string]interface{}{"day_used": filter.DayUsed})
 	}
 	if filter.IsR18 != nil {
-		filters = append(filters, map[string]interface{}{"is_r18": filter.IsR18})
+		if *filter.IsR18 {
+			filters = append(filters, map[string]interface{}{"is_r18": "true"})
+		} else {
+			filters = append(filters, map[string]interface{}{"is_r18": "false"})
+		}
 	}
 	if filter.Anonymous != nil {
-		filters = append(filters, map[string]interface{}{"anonymous": filter.Anonymous})
+		if *filter.Anonymous {
+			filters = append(filters, map[string]interface{}{"anonymous": "true"})
+		} else {
+			filters = append(filters, map[string]interface{}{"anonymous": "false"})
+		}
 	}
 	if filter.Rating != nil {
 		filters = append(filters, map[string]interface{}{"rating": filter.Rating})
